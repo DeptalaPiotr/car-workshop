@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> List Cars </title>
+</head>
+
+<body>
+<div>
+    <h1> List Cars </h1>
+<!--    <div th:text="${cars}"></div>-->
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th> Brand </th>
+                <th> Color </th>
+                <th> Read </th>
+                <th> Update </th>
+                <th> Delete </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${cars.empty}">
+                <td colspan="2"> No Cars Available </td>
+            </tr>
+            <tr th:each="car : ${cars}">
+                <td><span th:text="${car.brand}"> Brand </span></td>
+                <td><span th:text="${car.color}"> Color </span></td>
+                <td><a href="#" th:href="@{/cars/1}" >Read </a></td>
+                <td><a href="#" >Update </a></td>
+                <td><a href="#" >Delete </a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a href="#" th:href="@{/cars/create}" > Create </a>
+    </div>
+</div>
+</body>
+</html>

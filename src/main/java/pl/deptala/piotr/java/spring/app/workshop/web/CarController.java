@@ -1,6 +1,7 @@
 package pl.deptala.piotr.java.spring.app.workshop.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
@@ -27,7 +28,8 @@ public class CarController {
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
         carModels.add(carModel);
-        return "create-car";
+        return "redirect:/cars";
+       // return "redirect:/notes";
     }
 
     // R - read
@@ -45,25 +47,33 @@ public class CarController {
     // U - update
     @GetMapping(value = "/update")
     public String updateView() {
-        LOGGER.info("updateView");
-        return "update-Car";
+        LOGGER.info("updateView()");
+        return "update-car";
     }
 
-    @PutMapping
+    @PutMapping(value = "/update/{id}")
     public String update(
-    ) {
-        return "update-Car";
+            @PathVariable(name = "id") String id) {
+        LOGGER.info("update(" + id + ")");
+        return "finish-update";
     }
 
     // D - delete
-    public void deleteView() {
+    @GetMapping(value = "/delete")
+    public String deleteView() {
+        LOGGER.info("updateView()");
+        return "delete-car";
     }
 
     public void delete() {
     }
 
     // L - list
-    public void list() {
+    @GetMapping
+    public String list(ModelMap modelMap) {
+        LOGGER.info("list() = " + carModels);
+        modelMap.addAttribute("cars", carModels);
+        return "list-cars";
     }
 }
 // TODO: 03.10.2022
