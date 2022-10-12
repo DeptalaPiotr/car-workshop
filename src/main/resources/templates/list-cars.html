@@ -13,6 +13,7 @@
         <table>
             <thead>
             <tr>
+                <th> Id </th>
                 <th> Brand </th>
                 <th> Color </th>
                 <th> Read </th>
@@ -25,11 +26,12 @@
                 <td colspan="2"> No Cars Available </td>
             </tr>
             <tr th:each="car : ${cars}">
+                <td><span th:text="${car.id}"> Id </span></td>
                 <td><span th:text="${car.brand}"> Brand </span></td>
                 <td><span th:text="${car.color}"> Color </span></td>
-                <td><a href="#" th:href="@{/cars/1}" >Read </a></td>
+                <td><a href="#" th:href="@{/cars/{id}(id=${car.id})}" >Read </a></td>
                 <td><a href="#" >Update </a></td>
-                <td><a href="#" >Delete </a></td>
+                <td><a href="#" th:href="@{/cars/delete/{id}(id=${car.id})}" >Delete </a></td>
             </tr>
             </tbody>
         </table>

@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.*;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Controller
 @RequestMapping(value = "/cars")
 public class CarController {
 
-    public static final Logger LOGGER = Logger.getLogger(CarController.class.getName());
-    public List<CarModel> carModels = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(CarController.class.getName());
+    private List<CarModel> carModels = new ArrayList<>();
+    private Random randomId = new Random();
 
     @GetMapping(value = "/create")
     public String createView() {
@@ -27,9 +27,10 @@ public class CarController {
     @PostMapping
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
+        carModel.setId(randomId.nextLong());
         carModels.add(carModel);
         return "redirect:/cars";
-       // return "redirect:/notes";
+        // return "redirect:/notes";
     }
 
     // R - read
@@ -59,14 +60,26 @@ public class CarController {
     }
 
     // D - delete
-    @GetMapping(value = "/delete")
-    public String deleteView() {
-        LOGGER.info("updateView()");
-        return "delete-car";
+    @GetMapping(value = "/delete/{id}")
+    public String delete(
+            @PathVariable(name = "id") Long id) {
+        LOGGER.info("delete(" + id + ")");
+        for (CarModel car : carModels) {
+            ListIterator<CarModel> iter = carModels.listIterator();
+            while (iter.hasNext()) {
+                if (id.equals(iter.next())) {
+                    LOGGER.info("Car is found");
+                    iter.remove();
+                    // TODO: 10.10.2022
+                    // Naprawić błąd java.util.ConcurrentModificationException:
+                }
+            }
+            LOGGER.info("Delete Car");
+            carModels.remove(car);
+        }
+        return "redirect:/cars";
     }
 
-    public void delete() {
-    }
 
     // L - list
     @GetMapping
@@ -75,9 +88,16 @@ public class CarController {
         modelMap.addAttribute("cars", carModels);
         return "list-cars";
     }
+
+
 }
+
+
 // TODO: 03.10.2022
 // Dokończyć implementacje metod CRUD zgodnie z :
 // - https://github.com/internet3/crud-rest
 // - https://www.juniorjavadeveloper.pl/2020/04/25/pierwsza-klasa-jako-serwis-crud-kod-java-intellij-krok-po-kroku/
 // - https://geek.justjoin.it/komunikacja-frontend-www-z-backend-w-javie/
+
+// TODO: 10.10.2022
+// Dokończyć implementację read i update na nowych branch
