@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Controller
@@ -66,16 +64,22 @@ public class CarController {
     public String delete(
             @PathVariable(name = "id") Long id) {
         LOGGER.info("delete(" + id + ")");
-        for (CarModel car: carModels){
-            if (car.getId().equals(id)){
-                LOGGER.info("Car is found");
-                carModels.remove(car);
-                // TODO: 10.10.2022
-                // Naprawić błąd java.util.ConcurrentModificationException:
+        for (CarModel car : carModels) {
+            ListIterator<CarModel> iter = carModels.listIterator();
+            while (iter.hasNext()) {
+                if (id.equals(iter.next())) {
+                    LOGGER.info("Car is found");
+                    iter.remove();
+                    // TODO: 10.10.2022
+                    // Naprawić błąd java.util.ConcurrentModificationException:
+                }
             }
+            LOGGER.info("Delete Car");
+            carModels.remove(car);
         }
         return "redirect:/cars";
     }
+
 
     // L - list
     @GetMapping
@@ -84,7 +88,11 @@ public class CarController {
         modelMap.addAttribute("cars", carModels);
         return "list-cars";
     }
+
+
 }
+
+
 // TODO: 03.10.2022
 // Dokończyć implementacje metod CRUD zgodnie z :
 // - https://github.com/internet3/crud-rest
