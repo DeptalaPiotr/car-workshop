@@ -8,14 +8,16 @@ import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @Controller
 @RequestMapping(value = "/cars")
 public class CarController {
 
-    public static final Logger LOGGER = Logger.getLogger(CarController.class.getName());
-    public List<CarModel> carModels = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(CarController.class.getName());
+    private List<CarModel> carModels = new ArrayList<>();
+    private Random randomId = new Random();
 
     @GetMapping(value = "/create")
     public String createView() {
@@ -27,9 +29,10 @@ public class CarController {
     @PostMapping
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
+        carModel.setId(randomId.nextLong());
         carModels.add(carModel);
         return "redirect:/cars";
-       // return "redirect:/notes";
+        // return "redirect:/notes";
     }
 
     // R - read
@@ -59,13 +62,19 @@ public class CarController {
     }
 
     // D - delete
-    @GetMapping(value = "/delete")
-    public String deleteView() {
-        LOGGER.info("updateView()");
-        return "delete-car";
-    }
-
-    public void delete() {
+    @GetMapping(value = "/delete/{id}")
+    public String delete(
+            @PathVariable(name = "id") Long id) {
+        LOGGER.info("delete(" + id + ")");
+        for (CarModel car: carModels){
+            if (car.getId().equals(id)){
+                LOGGER.info("Car is found");
+                carModels.remove(car);
+                // TODO: 10.10.2022
+                // Naprawić błąd java.util.ConcurrentModificationException:
+            }
+        }
+        return "redirect:/cars";
     }
 
     // L - list
@@ -81,3 +90,6 @@ public class CarController {
 // - https://github.com/internet3/crud-rest
 // - https://www.juniorjavadeveloper.pl/2020/04/25/pierwsza-klasa-jako-serwis-crud-kod-java-intellij-krok-po-kroku/
 // - https://geek.justjoin.it/komunikacja-frontend-www-z-backend-w-javie/
+
+// TODO: 10.10.2022
+// Dokończyć implementację read i update na nowych branch
