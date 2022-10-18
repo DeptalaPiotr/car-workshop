@@ -30,7 +30,7 @@
                 <td><span th:text="${car.brand}"> Brand </span></td>
                 <td><span th:text="${car.color}"> Color </span></td>
                 <td><a href="#" th:href="@{/cars/{id}(id=${car.id})}" >Read </a></td>
-                <td><a href="#" >Update </a></td>
+                <td><a href="#" th:href="@{/cars/update/{id}(id=${car.id})}">Update </a></td>
                 <td><a href="#" th:href="@{/cars/delete/{id}(id=${car.id})}" >Delete </a></td>
             </tr>
             </tbody>
