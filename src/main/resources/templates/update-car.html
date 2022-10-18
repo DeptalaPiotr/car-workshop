@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Update Car</title>
@@ -9,18 +9,30 @@
   <h1> Update Car </h1>
 </div>
 <div>
-  <form action="/update" method="put">
-    <label for="brand">Car brand:</label><br>
-    <input type="text" id="brand" name="brand" value="BMW"><br>
-    <label for="color">Car color:</label><br>
-    <input type="text" id="color" name="color" value="Black"><br><br>
 
-    <label for="brand">Update Car brand:</label><br>
-    <input type="text" id="set brand" name="brand" value="VW"><br>
-    <label for="color">Update Car color:</label><br>
-    <input type="text" id="set color" name="color" value="White"><br><br>
-
-    <input type="submit" value="Submit">
+  <div>
+    <table>
+      <thead>
+      <tr>
+        <th> Id </th>
+        <th> Brand </th>
+        <th> Color </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="car : ${readCar}">
+        <td><span th:text="${car.id}"> Id </span></td>
+        <td><span th:text="${car.brand}"> Brand </span></td>
+        <td><span th:text="${car.color}"> Color </span></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<form action="/update/update-car" method="post">
+  <input type="text" id="{updateBrand}" name="updateBrand" value=""><br>
+  <input type="text" id="{updateColor}" name="updateColor" value=""><br><br>
+  <a href="#" th:href="@{/cars}" > Update </a>
   </form>
 </div>
 </body>

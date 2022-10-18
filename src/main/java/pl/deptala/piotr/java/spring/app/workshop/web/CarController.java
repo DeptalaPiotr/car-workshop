@@ -36,27 +36,42 @@ public class CarController {
     // R - read
     @GetMapping(value = "/{id}")
     public String read(
-            @PathVariable(name = "id") String id) { //http://localhost:8080/cars/1
+            @PathVariable(name = "id") String id, ModelMap modelMap) { //http://localhost:8080/cars/1
         //public String read(String id,String name) { //http://localhost:8080/cars?id=1&name=Audi
         LOGGER.info("read(" + id + ")");
         for (CarModel carModel : carModels) {
             System.out.println(carModel);
+            modelMap.addAttribute("readCar", carModel);
         }
         return "read-car";
     }
 
     // U - update
-    @GetMapping(value = "/update")
-    public String updateView() {
-        LOGGER.info("updateView()");
+    @GetMapping(value = "/update/{id}")
+    public String updateView(
+            @PathVariable(name = "id") Long id, ModelMap modelMap) {
+        LOGGER.info("updateView()" + id + "");
+        for (CarModel car : carModels) {
+            System.out.println(car);
+            modelMap.addAttribute("readCar", car);
+        }
         return "update-car";
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/update/update-car")
     public String update(
-            @PathVariable(name = "id") String id) {
-        LOGGER.info("update(" + id + ")");
-        return "finish-update";
+            @PathVariable(name = "id") Long id, ModelMap modelMap,
+             String newBrand, String newColor) {
+        for(CarModel carModel: carModels){
+            if( id.equals(carModel)){
+                carModel.setBrand(newBrand);
+                carModel.setColor(newColor);
+                LOGGER.info("update(" + id + ")");
+            }else {
+               LOGGER.info("Car can't by update");
+           }
+        }
+        return "redirect:/cars";
     }
 
     // D - delete
@@ -64,8 +79,8 @@ public class CarController {
     public String delete(
             @PathVariable(name = "id") Long id) {
         LOGGER.info("delete(" + id + ")");
+        ListIterator<CarModel> iter = carModels.listIterator();
         for (CarModel car : carModels) {
-            ListIterator<CarModel> iter = carModels.listIterator();
             while (iter.hasNext()) {
                 if (id.equals(iter.next())) {
                     LOGGER.info("Car is found");
