@@ -3,10 +3,12 @@ package pl.deptala.piotr.java.spring.app.workshop.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @Controller
@@ -30,7 +32,6 @@ public class CarController {
         carModel.setId(randomId.nextLong());
         carModels.add(carModel);
         return "redirect:/cars";
-        // return "redirect:/notes";
     }
 
     // R - read
@@ -52,49 +53,41 @@ public class CarController {
             @PathVariable(name = "id") Long id, ModelMap modelMap) {
         LOGGER.info("updateView()" + id + "");
         for (CarModel car : carModels) {
-            System.out.println(car);
-            modelMap.addAttribute("readCar", car);
+            if (car.getId().equals(id)) {
+                LOGGER.info("Found a car " + car + "");
+                modelMap.addAttribute("car", car);
+            }
+
         }
         return "update-car";
     }
 
-    @PutMapping(value = "/update/update-car")
-    public String update(
-            @PathVariable(name = "id") Long id, ModelMap modelMap,
-             String newBrand, String newColor) {
-        for(CarModel carModel: carModels){
-            if( id.equals(carModel)){
-                carModel.setBrand(newBrand);
-                carModel.setColor(newColor);
-                LOGGER.info("update(" + id + ")");
-            }else {
-               LOGGER.info("Car can't by update");
-           }
+    @PostMapping(value = "/update")
+    public String update(CarModel car) {
+        LOGGER.info("update(" + car + ")");
+        for (CarModel carModel : carModels) {
+            if (car.getId().equals(carModel.getId())) {
+                carModel.setBrand(car.getBrand());
+                carModel.setColor(car.getColor());
+            }
         }
         return "redirect:/cars";
     }
 
     // D - delete
     @GetMapping(value = "/delete/{id}")
-    public String delete(
-            @PathVariable(name = "id") Long id) {
+    public String delete(@PathVariable(name = "id") Long id) {
         LOGGER.info("delete(" + id + ")");
-        ListIterator<CarModel> iter = carModels.listIterator();
-        for (CarModel car : carModels) {
-            while (iter.hasNext()) {
-                if (id.equals(iter.next())) {
-                    LOGGER.info("Car is found");
-                    iter.remove();
-                    // TODO: 10.10.2022
-                    // Naprawić błąd java.util.ConcurrentModificationException:
-                }
+        ListIterator<CarModel> iterator = carModels.listIterator();
+        while (iterator.hasNext()) {
+            CarModel car = iterator.next();
+            if (id.equals(car.getId())) {
+                iterator.remove();
+                LOGGER.info("delete(...) = " + car);
             }
-            LOGGER.info("Delete Car");
-            carModels.remove(car);
         }
         return "redirect:/cars";
     }
-
 
     // L - list
     @GetMapping
@@ -103,16 +96,4 @@ public class CarController {
         modelMap.addAttribute("cars", carModels);
         return "list-cars";
     }
-
-
 }
-
-
-// TODO: 03.10.2022
-// Dokończyć implementacje metod CRUD zgodnie z :
-// - https://github.com/internet3/crud-rest
-// - https://www.juniorjavadeveloper.pl/2020/04/25/pierwsza-klasa-jako-serwis-crud-kod-java-intellij-krok-po-kroku/
-// - https://geek.justjoin.it/komunikacja-frontend-www-z-backend-w-javie/
-
-// TODO: 10.10.2022
-// Dokończyć implementację read i update na nowych branch
