@@ -3,6 +3,8 @@ package pl.deptala.piotr.java.spring.app.workshop.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
+import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
 import java.util.ArrayList;
@@ -18,6 +20,12 @@ public class CarController {
     private static final Logger LOGGER = Logger.getLogger(CarController.class.getName());
     private List<CarModel> carModels = new ArrayList<>();
     private Random randomId = new Random();
+
+    private CarRepository carRepository;
+
+    public CarController(CarRepository carRepository) {
+        this.carRepository = carRepository;
+    }
 
     @GetMapping(value = "/create")
     public String createView() {
@@ -93,7 +101,10 @@ public class CarController {
     @GetMapping
     public String list(ModelMap modelMap) {
         LOGGER.info("list() = " + carModels);
+        List<CarEntity> cars = carRepository.findAll();
         modelMap.addAttribute("cars", carModels);
         return "list-cars";
     }
 }
+// TODO: 18.10.2022
+// W każdej metodzie CRUD zastąpić Liste carModels i operacje n niej z użyciem carRepository
