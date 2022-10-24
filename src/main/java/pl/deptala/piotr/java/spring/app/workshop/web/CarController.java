@@ -7,10 +7,7 @@ import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Controller
@@ -38,7 +35,12 @@ public class CarController {
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
         carModel.setId(randomId.nextLong());
-        carModels.add(carModel);
+//        carModels.add(carModel);
+        CarEntity carEntity = new CarEntity();
+        carEntity.setId(carModel.getId());
+        carEntity.setBrand(carModel.getBrand());
+        carEntity.setColor(carModel.getColor());
+        carRepository.save(carEntity);
         return "redirect:/cars";
     }
 
@@ -48,10 +50,12 @@ public class CarController {
             @PathVariable(name = "id") String id, ModelMap modelMap) { //http://localhost:8080/cars/1
         //public String read(String id,String name) { //http://localhost:8080/cars?id=1&name=Audi
         LOGGER.info("read(" + id + ")");
-        for (CarModel carModel : carModels) {
-            System.out.println(carModel);
-            modelMap.addAttribute("readCar", carModel);
-        }
+        CarEntity referenceById = carRepository.getReferenceById(Long.valueOf(id));
+        modelMap.addAttribute("readCar", referenceById);
+//        for (CarModel carModel : carModels) {
+//            System.out.println(carModel);
+//            modelMap.addAttribute("readCar", carModel);
+//        }
         return "read-car";
     }
 
@@ -60,25 +64,34 @@ public class CarController {
     public String updateView(
             @PathVariable(name = "id") Long id, ModelMap modelMap) {
         LOGGER.info("updateView()" + id + "");
-        for (CarModel car : carModels) {
-            if (car.getId().equals(id)) {
-                LOGGER.info("Found a car " + car + "");
-                modelMap.addAttribute("car", car);
-            }
-
-        }
+        CarEntity carEntity = carRepository.getReferenceById(Long.valueOf(id));
+        LOGGER.info("Found a car " + carEntity + "");
+        modelMap.addAttribute("car", carEntity);
         return "update-car";
+//        for (CarModel car : carModels) {
+//            if (car.getId().equals(id)) {
+//                LOGGER.info("Found a car " + car + "");
+//                modelMap.addAttribute("car", car);
+//            }
+//
+//        }
     }
+
 
     @PostMapping(value = "/update")
     public String update(CarModel car) {
         LOGGER.info("update(" + car + ")");
-        for (CarModel carModel : carModels) {
-            if (car.getId().equals(carModel.getId())) {
-                carModel.setBrand(car.getBrand());
-                carModel.setColor(car.getColor());
-            }
-        }
+        CarEntity carEntity = carRepository.getReferenceById(car.getId());
+        carEntity.setBrand(car.getBrand());
+        carEntity.setColor(car.getColor());
+        carRepository.save(carEntity);
+//        for (CarModel carModel : carModels) {
+//            if (car.getId().equals(carModel.getId())) {
+//                carModel.setBrand(car.getBrand());
+//                carModel.setColor(car.getColor());
+//            }
+//        }
+
         return "redirect:/cars";
     }
 
@@ -86,25 +99,25 @@ public class CarController {
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable(name = "id") Long id) {
         LOGGER.info("delete(" + id + ")");
-        ListIterator<CarModel> iterator = carModels.listIterator();
-        while (iterator.hasNext()) {
-            CarModel car = iterator.next();
-            if (id.equals(car.getId())) {
-                iterator.remove();
-                LOGGER.info("delete(...) = " + car);
-            }
-        }
+//        ListIterator<CarModel> iterator = carModels.listIterator();
+        carRepository.deleteById(id);
+//        while (iterator.hasNext()) {
+//            CarModel car = iterator.next();
+//            if (id.equals(car.getId())) {
+//                iterator.remove();
+//                LOGGER.info("delete(...) = " + car);
+//            }
         return "redirect:/cars";
     }
 
     // L - list
     @GetMapping
     public String list(ModelMap modelMap) {
-        LOGGER.info("list() = " + carModels);
         List<CarEntity> cars = carRepository.findAll();
-        modelMap.addAttribute("cars", carModels);
+        modelMap.addAttribute("cars", cars);
+        LOGGER.info("list() = " + cars);
         return "list-cars";
     }
 }
 // TODO: 18.10.2022
-// W każdej metodzie CRUD zastąpić Liste carModels i operacje n niej z użyciem carRepository
+// W każdej metodzie CRUD zastąpić Liste carModels i operacje n niej z użyciem carRepository *
