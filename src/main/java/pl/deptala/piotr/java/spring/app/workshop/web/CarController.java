@@ -5,6 +5,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
+import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
 import java.util.*;
@@ -19,9 +20,11 @@ public class CarController {
     private Random randomId = new Random();
 
     private CarRepository carRepository;
+    private CarService carService;
 
-    public CarController(CarRepository carRepository) {
+    public CarController(CarRepository carRepository, CarService carService) {
         this.carRepository = carRepository;
+        this.carService = carService;
     }
 
     @GetMapping(value = "/create")
@@ -34,13 +37,7 @@ public class CarController {
     @PostMapping
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
-        carModel.setId(randomId.nextLong());
-//        carModels.add(carModel);
-        CarEntity carEntity = new CarEntity();
-        carEntity.setId(carModel.getId());
-        carEntity.setBrand(carModel.getBrand());
-        carEntity.setColor(carModel.getColor());
-        carRepository.save(carEntity);
+        CarModel createdCarModel = carService.create(carModel);
         return "redirect:/cars";
     }
 
