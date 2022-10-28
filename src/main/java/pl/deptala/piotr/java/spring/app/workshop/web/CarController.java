@@ -47,32 +47,10 @@ public class CarController {
     public String read(
             @PathVariable(name = "id") Long id, ModelMap modelMap) throws CarNotFoundException {
         LOGGER.info("read(" + id + ")");
-//        CarEntity referenceById = carRepository.getReferenceById(Long.valueOf(id));
-//        carRepository.findById(Long.valueOf(id));
         Optional<CarEntity> optionalCarEntity = carRepository.findById(id);
-
-//        if (optionalCarEntity.isPresent()) {
-//            CarEntity carEntity = optionalCarEntity.get();
-//            String brand = carEntity.getBrand();
-//        }
-
-//        CarEntity carEntity = optionalCarEntity.orElse(new CarEntity());
-//        String brand = carEntity.getBrand();
-
-//        CarEntity carEntity = optionalCarEntity.orElseThrow();
-//        String brand = carEntity.getBrand();
-
         CarEntity carEntity = optionalCarEntity.orElseThrow(
-                () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + id)
-        );
-
-//        CarEntity carEntity = null;
-//        if (carEntity != null){
-//            String brand = carEntity.getBrand();
-//        }
-//        if (brand)
-
-//        modelMap.addAttribute("readCar", referenceById);
+                () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + id));
+        modelMap.addAttribute("readCar", carEntity);
         return "read-car";
     }
 
@@ -82,32 +60,22 @@ public class CarController {
             @PathVariable(name = "id") Long id, ModelMap modelMap) {
         LOGGER.info("updateView()" + id + "");
         CarEntity carEntity = carRepository.getReferenceById(Long.valueOf(id));
+        // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
         LOGGER.info("Found a car " + carEntity + "");
         modelMap.addAttribute("car", carEntity);
         return "update-car";
-//        for (CarModel car : carModels) {
-//            if (car.getId().equals(id)) {
-//                LOGGER.info("Found a car " + car + "");
-//                modelMap.addAttribute("car", car);
-//            }
-//
-//        }
     }
+
 
 
     @PostMapping(value = "/update")
     public String update(CarModel car) {
         LOGGER.info("update(" + car + ")");
         CarEntity carEntity = carRepository.getReferenceById(car.getId());
+        // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
         carEntity.setBrand(car.getBrand());
         carEntity.setColor(car.getColor());
         carRepository.save(carEntity);
-//        for (CarModel carModel : carModels) {
-//            if (car.getId().equals(carModel.getId())) {
-//                carModel.setBrand(car.getBrand());
-//                carModel.setColor(car.getColor());
-//            }
-//        }
 
         return "redirect:/cars";
     }
@@ -116,14 +84,8 @@ public class CarController {
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable(name = "id") Long id) {
         LOGGER.info("delete(" + id + ")");
-//        ListIterator<CarModel> iterator = carModels.listIterator();
         carRepository.deleteById(id);
-//        while (iterator.hasNext()) {
-//            CarModel car = iterator.next();
-//            if (id.equals(car.getId())) {
-//                iterator.remove();
-//                LOGGER.info("delete(...) = " + car);
-//            }
+
         return "redirect:/cars";
     }
 
@@ -136,5 +98,3 @@ public class CarController {
         return "list-cars";
     }
 }
-// TODO: 18.10.2022
-// W każdej metodzie CRUD zastąpić Liste carModels i operacje n niej z użyciem carRepository *
