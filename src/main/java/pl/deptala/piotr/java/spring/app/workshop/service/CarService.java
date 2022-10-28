@@ -29,13 +29,16 @@ public class CarService {
         carEntity.setBrand(carModel.getBrand());
         carEntity.setColor(carModel.getColor());
 
+        // TODO: 28.10.2022
+        // Zastąpić powyższy kod implementacją mappera
+
         CarEntity savedCarEntity = carRepository.save(carEntity);
 
 //        CarModel createdCarModel = new CarModel();
 //        createdCarModel.setId(savedCarEntity.getId());
 //        createdCarModel.setBrand(savedCarEntity.getBrand());
 //        createdCarModel.setColor(savedCarEntity.getColor());
-        CarModel mappedCarModel = carMapper.mapCarEntity(savedCarEntity);
+        CarModel mappedCarModel = carMapper.from(savedCarEntity);
         LOGGER.info("create(...) = " + mappedCarModel);
         return mappedCarModel;
     }
@@ -49,10 +52,12 @@ public class CarService {
 //        readCarModel.setId(carEntity.getId());
 //        readCarModel.setBrand(carEntity.getBrand());
 //        readCarModel.setColor(carEntity.getColor());
-        CarModel carModel = carMapper.mapCarEntity(carEntity);
+        CarModel carModel = carMapper.from(carEntity);
         return carModel;
     }
 
+    // TODO: 28.10.2022
+    // Dokończyć implementacje update() oraz delete() analogicznie do create() & read()
     // U - update
     public void update() {
     }
