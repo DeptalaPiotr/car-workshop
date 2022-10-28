@@ -3,6 +3,7 @@ package pl.deptala.piotr.java.spring.app.workshop.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
@@ -34,10 +35,7 @@ public class CarController {
     @PostMapping
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
-        carModel.setId(randomId.nextLong());
-//        carModels.add(carModel);
         CarEntity carEntity = new CarEntity();
-        carEntity.setId(carModel.getId());
         carEntity.setBrand(carModel.getBrand());
         carEntity.setColor(carModel.getColor());
         carRepository.save(carEntity);
@@ -47,15 +45,34 @@ public class CarController {
     // R - read
     @GetMapping(value = "/{id}")
     public String read(
-            @PathVariable(name = "id") String id, ModelMap modelMap) { //http://localhost:8080/cars/1
-        //public String read(String id,String name) { //http://localhost:8080/cars?id=1&name=Audi
+            @PathVariable(name = "id") Long id, ModelMap modelMap) throws CarNotFoundException {
         LOGGER.info("read(" + id + ")");
-        CarEntity referenceById = carRepository.getReferenceById(Long.valueOf(id));
-        modelMap.addAttribute("readCar", referenceById);
-//        for (CarModel carModel : carModels) {
-//            System.out.println(carModel);
-//            modelMap.addAttribute("readCar", carModel);
+//        CarEntity referenceById = carRepository.getReferenceById(Long.valueOf(id));
+//        carRepository.findById(Long.valueOf(id));
+        Optional<CarEntity> optionalCarEntity = carRepository.findById(id);
+
+//        if (optionalCarEntity.isPresent()) {
+//            CarEntity carEntity = optionalCarEntity.get();
+//            String brand = carEntity.getBrand();
 //        }
+
+//        CarEntity carEntity = optionalCarEntity.orElse(new CarEntity());
+//        String brand = carEntity.getBrand();
+
+//        CarEntity carEntity = optionalCarEntity.orElseThrow();
+//        String brand = carEntity.getBrand();
+
+        CarEntity carEntity = optionalCarEntity.orElseThrow(
+                () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + id)
+        );
+
+//        CarEntity carEntity = null;
+//        if (carEntity != null){
+//            String brand = carEntity.getBrand();
+//        }
+//        if (brand)
+
+//        modelMap.addAttribute("readCar", referenceById);
         return "read-car";
     }
 
