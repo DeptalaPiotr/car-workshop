@@ -78,7 +78,6 @@ public class CarController {
         );
         // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
         carService.update(car);
-
         return "redirect:/cars";
     }
 
