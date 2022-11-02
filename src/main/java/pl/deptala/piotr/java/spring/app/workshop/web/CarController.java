@@ -57,9 +57,11 @@ public class CarController {
     // U - update
     @GetMapping(value = "/update/{id}")
     public String updateView(
-            @PathVariable(name = "id") Long id, ModelMap modelMap) {
+            @PathVariable(name = "id") Long id, ModelMap modelMap) throws CarNotFoundException {
         LOGGER.info("updateView()" + id + "");
-        CarEntity carEntity = carRepository.getReferenceById(Long.valueOf(id));
+        Optional<CarEntity> updateViewOptional = carRepository.findById(id);
+        CarEntity carEntity = updateViewOptional.orElseThrow(
+                () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + updateViewOptional));
         // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
         LOGGER.info("Found a car " + carEntity + "");
         modelMap.addAttribute("car", carEntity);
@@ -67,11 +69,13 @@ public class CarController {
     }
 
 
-
     @PostMapping(value = "/update")
-    public String update(CarModel car) {
+    public String update(CarModel car) throws CarNotFoundException {
         LOGGER.info("update(" + car + ")");
-        CarEntity carEntity = carRepository.getReferenceById(car.getId());
+        Optional<CarEntity> updateOptional = carRepository.findById(car.getId());
+        CarEntity carEntity = updateOptional.orElseThrow(
+                () -> new CarNotFoundException("Car whit ID" + updateOptional + " is not found")
+        );
         // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
         carEntity.setBrand(car.getBrand());
         carEntity.setColor(car.getColor());
