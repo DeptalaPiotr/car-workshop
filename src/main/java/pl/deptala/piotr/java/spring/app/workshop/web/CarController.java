@@ -3,6 +3,7 @@ package pl.deptala.piotr.java.spring.app.workshop.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
@@ -44,23 +45,24 @@ public class CarController {
     // R - read
     @GetMapping(value = "/{id}")
     public String read(
-            @PathVariable(name = "id") String id, ModelMap modelMap) { //http://localhost:8080/cars/1
-        //public String read(String id,String name) { //http://localhost:8080/cars?id=1&name=Audi
+            @PathVariable(name = "id") Long id, ModelMap modelMap) throws CarNotFoundException {
         LOGGER.info("read(" + id + ")");
-        CarEntity referenceById = carRepository.getReferenceById(Long.valueOf(id));
-        modelMap.addAttribute("readCar", referenceById);
-//        for (CarModel carModel : carModels) {
-//            System.out.println(carModel);
-//            modelMap.addAttribute("readCar", carModel);
-//        }
+        Optional<CarEntity> optionalCarEntity = carRepository.findById(id);
+        CarEntity carEntity = optionalCarEntity.orElseThrow(
+                () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + id));
+        modelMap.addAttribute("readCar", carEntity);
         return "read-car";
     }
 
     // U - update
     @GetMapping(value = "/update/{id}")
     public String updateView(
-            @PathVariable(name = "id") Long id, ModelMap modelMap) {
+            @PathVariable(name = "id") Long id, ModelMap modelMap) throws CarNotFoundException {
         LOGGER.info("updateView()" + id + "");
+        Optional<CarEntity> updateViewOptional = carRepository.findById(id);
+        CarEntity carEntity = updateViewOptional.orElseThrow(
+                () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + updateViewOptional));
+        // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
         CarEntity carEntity = carRepository.getReferenceById(id);
         LOGGER.info("Found a car " + carEntity + "");
         modelMap.addAttribute("car", carEntity);
@@ -76,8 +78,16 @@ public class CarController {
 
 
     @PostMapping(value = "/update")
-    public String update(CarModel car) {
+    public String update(CarModel car) throws CarNotFoundException {
         LOGGER.info("update(" + car + ")");
+        Optional<CarEntity> updateOptional = carRepository.findById(car.getId());
+        CarEntity carEntity = updateOptional.orElseThrow(
+                () -> new CarNotFoundException("Car whit ID" + updateOptional + " is not found")
+        );
+        // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
+        carEntity.setBrand(car.getBrand());
+        carEntity.setColor(car.getColor());
+        carRepository.save(carEntity);
 //        CarEntity carEntity = carRepository.getReferenceById(car.getId());
 //        carEntity.setBrand(car.getBrand());
 //        carEntity.setColor(car.getColor());
@@ -97,6 +107,8 @@ public class CarController {
     @GetMapping(value = "/delete/{id}")
     public String delete(@PathVariable(name = "id") Long id) {
         LOGGER.info("delete(" + id + ")");
+        carRepository.deleteById(id);
+
 //        ListIterator<CarModel> iterator = carModels.listIterator();
 //        carRepository.deleteById(id);
 //        while (iterator.hasNext()) {
@@ -118,5 +130,3 @@ public class CarController {
         return "list-cars";
     }
 }
-// TODO: 18.10.2022
-// W każdej metodzie CRUD zastąpić Liste carModels i operacje n niej z użyciem carRepository *
