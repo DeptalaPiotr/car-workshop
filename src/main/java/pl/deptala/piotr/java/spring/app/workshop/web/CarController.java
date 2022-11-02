@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
+import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
 import java.util.*;
@@ -20,9 +21,11 @@ public class CarController {
     private Random randomId = new Random();
 
     private CarRepository carRepository;
+    private CarService carService;
 
-    public CarController(CarRepository carRepository) {
+    public CarController(CarRepository carRepository, CarService carService) {
         this.carRepository = carRepository;
+        this.carService = carService;
     }
 
     @GetMapping(value = "/create")
@@ -35,10 +38,7 @@ public class CarController {
     @PostMapping
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
-        CarEntity carEntity = new CarEntity();
-        carEntity.setBrand(carModel.getBrand());
-        carEntity.setColor(carModel.getColor());
-        carRepository.save(carEntity);
+        CarModel createdCarModel = carService.create(carModel);
         return "redirect:/cars";
     }
 
@@ -63,9 +63,17 @@ public class CarController {
         CarEntity carEntity = updateViewOptional.orElseThrow(
                 () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + updateViewOptional));
         // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
+        CarEntity carEntity = carRepository.getReferenceById(id);
         LOGGER.info("Found a car " + carEntity + "");
         modelMap.addAttribute("car", carEntity);
         return "update-car";
+//        for (CarModel car : carModels) {
+//            if (car.getId().equals(id)) {
+//                LOGGER.info("Found a car " + car + "");
+//                modelMap.addAttribute("car", car);
+//            }
+//
+//        }
     }
 
 
@@ -80,6 +88,17 @@ public class CarController {
         carEntity.setBrand(car.getBrand());
         carEntity.setColor(car.getColor());
         carRepository.save(carEntity);
+//        CarEntity carEntity = carRepository.getReferenceById(car.getId());
+//        carEntity.setBrand(car.getBrand());
+//        carEntity.setColor(car.getColor());
+//        carRepository.save(carEntity);
+//        for (CarModel carModel : carModels) {
+//            if (car.getId().equals(carModel.getId())) {
+//                carModel.setBrand(car.getBrand());
+//                carModel.setColor(car.getColor());
+//            }
+//        }
+        carService.update(car);
 
         return "redirect:/cars";
     }
@@ -90,6 +109,15 @@ public class CarController {
         LOGGER.info("delete(" + id + ")");
         carRepository.deleteById(id);
 
+//        ListIterator<CarModel> iterator = carModels.listIterator();
+//        carRepository.deleteById(id);
+//        while (iterator.hasNext()) {
+//            CarModel car = iterator.next();
+//            if (id.equals(car.getId())) {
+//                iterator.remove();
+//                LOGGER.info("delete(...) = " + car);
+//            }
+        carService.delete(id);
         return "redirect:/cars";
     }
 
