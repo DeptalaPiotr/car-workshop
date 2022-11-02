@@ -61,7 +61,7 @@ public class CarController {
     public String updateView(
             @PathVariable(name = "id") Long id, ModelMap modelMap) {
         LOGGER.info("updateView()" + id + "");
-        CarEntity carEntity = carRepository.getReferenceById(Long.valueOf(id));
+        CarEntity carEntity = carRepository.getReferenceById(id);
         LOGGER.info("Found a car " + carEntity + "");
         modelMap.addAttribute("car", carEntity);
         return "update-car";
@@ -78,16 +78,17 @@ public class CarController {
     @PostMapping(value = "/update")
     public String update(CarModel car) {
         LOGGER.info("update(" + car + ")");
-        CarEntity carEntity = carRepository.getReferenceById(car.getId());
-        carEntity.setBrand(car.getBrand());
-        carEntity.setColor(car.getColor());
-        carRepository.save(carEntity);
+//        CarEntity carEntity = carRepository.getReferenceById(car.getId());
+//        carEntity.setBrand(car.getBrand());
+//        carEntity.setColor(car.getColor());
+//        carRepository.save(carEntity);
 //        for (CarModel carModel : carModels) {
 //            if (car.getId().equals(carModel.getId())) {
 //                carModel.setBrand(car.getBrand());
 //                carModel.setColor(car.getColor());
 //            }
 //        }
+        carService.update(car);
 
         return "redirect:/cars";
     }
@@ -97,13 +98,14 @@ public class CarController {
     public String delete(@PathVariable(name = "id") Long id) {
         LOGGER.info("delete(" + id + ")");
 //        ListIterator<CarModel> iterator = carModels.listIterator();
-        carRepository.deleteById(id);
+//        carRepository.deleteById(id);
 //        while (iterator.hasNext()) {
 //            CarModel car = iterator.next();
 //            if (id.equals(car.getId())) {
 //                iterator.remove();
 //                LOGGER.info("delete(...) = " + car);
 //            }
+        carService.delete(id);
         return "redirect:/cars";
     }
 

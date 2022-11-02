@@ -24,15 +24,16 @@ public class CarService {
     // C - create
     public CarModel create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
-        CarEntity carEntity = new CarEntity();
-        carEntity.setId(carModel.getId());
-        carEntity.setBrand(carModel.getBrand());
-        carEntity.setColor(carModel.getColor());
+//        CarEntity carEntity = new CarEntity();
+//        carEntity.setId(carModel.getId());
+//        carEntity.setBrand(carModel.getBrand());
+//        carEntity.setColor(carModel.getColor());
+        CarEntity model = carMapper.from(carModel);
 
         // TODO: 28.10.2022
         // Zastąpić powyższy kod implementacją mappera
 
-        CarEntity savedCarEntity = carRepository.save(carEntity);
+        CarEntity savedCarEntity = carRepository.save(model);
 
 //        CarModel createdCarModel = new CarModel();
 //        createdCarModel.setId(savedCarEntity.getId());
@@ -58,12 +59,22 @@ public class CarService {
 
     // TODO: 28.10.2022
     // Dokończyć implementacje update() oraz delete() analogicznie do create() & read()
+
     // U - update
-    public void update() {
+    public void update(CarModel car) {
+        LOGGER.info("update(" + car + ")");
+        CarEntity updateCar = carMapper.from(car);
+        carRepository.save(updateCar);
+        LOGGER.info("update(...)" + updateCar);
     }
 
     // D - delete
-    public void delete() {
+    public void delete(Long id) {
+        LOGGER.info("delete()" + id);
+        Optional<CarEntity> optionalCarEntity = carRepository.findById(id);
+        CarEntity carEntity = optionalCarEntity.orElseThrow();
+        carRepository.delete(carEntity);
+        LOGGER.info("delete(...)" + carEntity);
     }
 
     // L - list

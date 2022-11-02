@@ -11,10 +11,12 @@ import java.util.logging.Logger;
 public class CarMapper {
     private static final Logger LOGGER = Logger.getLogger(CarMapper.class.getName());
 
-    public void from(CarModel carModel) {
+    public CarEntity from(CarModel carModel) {
         LOGGER.info("from()");
-
-        LOGGER.info("from(...)");
+        ModelMapper modelMapper = new ModelMapper();
+        CarEntity carEntity = modelMapper.map(carModel, CarEntity.class);
+        LOGGER.info("from(...)" + carEntity);
+        return carEntity;
     }
 
     public CarModel from(CarEntity carEntity) {
