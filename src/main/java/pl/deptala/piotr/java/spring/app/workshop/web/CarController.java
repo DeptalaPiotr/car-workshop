@@ -5,6 +5,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
+import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
 import java.util.*;
@@ -19,9 +20,11 @@ public class CarController {
     private Random randomId = new Random();
 
     private CarRepository carRepository;
+    private CarService carService;
 
-    public CarController(CarRepository carRepository) {
+    public CarController(CarRepository carRepository, CarService carService) {
         this.carRepository = carRepository;
+        this.carService = carService;
     }
 
     @GetMapping(value = "/create")
@@ -34,13 +37,7 @@ public class CarController {
     @PostMapping
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
-        carModel.setId(randomId.nextLong());
-//        carModels.add(carModel);
-        CarEntity carEntity = new CarEntity();
-        carEntity.setId(carModel.getId());
-        carEntity.setBrand(carModel.getBrand());
-        carEntity.setColor(carModel.getColor());
-        carRepository.save(carEntity);
+        CarModel createdCarModel = carService.create(carModel);
         return "redirect:/cars";
     }
 
@@ -64,7 +61,7 @@ public class CarController {
     public String updateView(
             @PathVariable(name = "id") Long id, ModelMap modelMap) {
         LOGGER.info("updateView()" + id + "");
-        CarEntity carEntity = carRepository.getReferenceById(Long.valueOf(id));
+        CarEntity carEntity = carRepository.getReferenceById(id);
         LOGGER.info("Found a car " + carEntity + "");
         modelMap.addAttribute("car", carEntity);
         return "update-car";
@@ -81,16 +78,17 @@ public class CarController {
     @PostMapping(value = "/update")
     public String update(CarModel car) {
         LOGGER.info("update(" + car + ")");
-        CarEntity carEntity = carRepository.getReferenceById(car.getId());
-        carEntity.setBrand(car.getBrand());
-        carEntity.setColor(car.getColor());
-        carRepository.save(carEntity);
+//        CarEntity carEntity = carRepository.getReferenceById(car.getId());
+//        carEntity.setBrand(car.getBrand());
+//        carEntity.setColor(car.getColor());
+//        carRepository.save(carEntity);
 //        for (CarModel carModel : carModels) {
 //            if (car.getId().equals(carModel.getId())) {
 //                carModel.setBrand(car.getBrand());
 //                carModel.setColor(car.getColor());
 //            }
 //        }
+        carService.update(car);
 
         return "redirect:/cars";
     }
@@ -100,13 +98,14 @@ public class CarController {
     public String delete(@PathVariable(name = "id") Long id) {
         LOGGER.info("delete(" + id + ")");
 //        ListIterator<CarModel> iterator = carModels.listIterator();
-        carRepository.deleteById(id);
+//        carRepository.deleteById(id);
 //        while (iterator.hasNext()) {
 //            CarModel car = iterator.next();
 //            if (id.equals(car.getId())) {
 //                iterator.remove();
 //                LOGGER.info("delete(...) = " + car);
 //            }
+        carService.delete(id);
         return "redirect:/cars";
     }
 
