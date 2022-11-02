@@ -14,7 +14,7 @@ class CarMapperTest {
     private CarMapper carMapper;
 
     @Test
-    void from() {
+    void fromCarModel() {
         // Given
         CarModel carModel = new CarModel();
         carModel.setColor("Black");
@@ -26,7 +26,7 @@ class CarMapperTest {
     }
 
     @Test
-    void testFrom() {
+    void fromCarEntity() {
         // Given
         CarEntity carEntity = new CarEntity();
         carEntity.setColor("White");
