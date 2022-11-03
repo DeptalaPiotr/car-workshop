@@ -8,6 +8,7 @@ import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Component
 public class CarMapper {
@@ -22,12 +23,7 @@ public class CarMapper {
     }
 
     public CarModel from(CarEntity carEntity) {
-        LOGGER.info("from()");
-//        CarModel carModel = new CarModel();
-//        carModel.setId(carEntity.getId());
-//        carModel.setBrand(carEntity.getBrand());
-//        carModel.setColor(carEntity.getColor());
-
+        LOGGER.info("from(" + carEntity + ")");
         ModelMapper modelMapper = new ModelMapper();
         CarModel carModel = modelMapper.map(carEntity, CarModel.class);
         LOGGER.info("from(...) = " + carModel);
@@ -35,16 +31,14 @@ public class CarMapper {
     }
 
     public List<CarModel> fromList(List<CarEntity> carEntities) {
-        // Stworzyć Liste CarModel
-        // Wyciągnąć elementy z listy carEntity
-        // użyć mapper do pojedyńczego elementu listy carEntity
-        // Zapisać w List<CarModel>
-        List<CarModel> carModels = new ArrayList<>();
-       for (CarEntity carEntity: carEntities){
-           CarModel mappedCarModel = from(carEntity);
-           carModels.add(mappedCarModel);
-       }
+        LOGGER.info("fromList(" + carEntities + ")");
+        List<CarModel> carModels = carEntities.stream()
+                .map(this::from)
+                .collect(Collectors.toList());
+        LOGGER.info("fromList(...) = " + carModels);
         return carModels;
     }
-    // List<CarEntity> przemapować na List<CarModel>
 }
+// TODO: 03.11.2022
+// napisać metode, która mapuje List<CarEntity> do List<CarModel>
+// testy jednoskowe

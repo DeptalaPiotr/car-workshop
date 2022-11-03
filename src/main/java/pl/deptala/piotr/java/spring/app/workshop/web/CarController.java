@@ -88,7 +88,6 @@ public class CarController {
     // L - list
     @GetMapping
     public String list(ModelMap modelMap) {
-//        List<CarEntity> cars = carRepository.findAll();
         List<CarModel> cars = carService.list();
         modelMap.addAttribute("cars", cars);
         LOGGER.info("list() = " + cars);
