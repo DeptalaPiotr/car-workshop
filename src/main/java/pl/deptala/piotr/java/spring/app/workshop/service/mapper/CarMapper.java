@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Component
@@ -31,6 +33,18 @@ public class CarMapper {
         LOGGER.info("from(...) = " + carModel);
         return carModel;
     }
-    // TODO: 28.10.2022
-    // Dodać testy jednoskowe dla obu metod from()
+
+    public List<CarModel> fromList(List<CarEntity> carEntities) {
+        // Stworzyć Liste CarModel
+        // Wyciągnąć elementy z listy carEntity
+        // użyć mapper do pojedyńczego elementu listy carEntity
+        // Zapisać w List<CarModel>
+        List<CarModel> carModels = new ArrayList<>();
+       for (CarEntity carEntity: carEntities){
+           CarModel mappedCarModel = from(carEntity);
+           carModels.add(mappedCarModel);
+       }
+        return carModels;
+    }
+    // List<CarEntity> przemapować na List<CarModel>
 }
