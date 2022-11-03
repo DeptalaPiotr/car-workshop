@@ -1,11 +1,13 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
 import org.springframework.stereotype.Service;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.mapper.CarMapper;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -24,48 +26,32 @@ public class CarService {
     // C - create
     public CarModel create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
-//        CarEntity carEntity = new CarEntity();
-//        carEntity.setId(carModel.getId());
-//        carEntity.setBrand(carModel.getBrand());
-//        carEntity.setColor(carModel.getColor());
-        CarEntity model = carMapper.from(carModel);
-
-        // TODO: 28.10.2022
-        // Zastąpić powyższy kod implementacją mappera
-
-        CarEntity savedCarEntity = carRepository.save(model);
-
-//        CarModel createdCarModel = new CarModel();
-//        createdCarModel.setId(savedCarEntity.getId());
-//        createdCarModel.setBrand(savedCarEntity.getBrand());
-//        createdCarModel.setColor(savedCarEntity.getColor());
+        CarEntity carEntity = carMapper.from(carModel);
+        CarEntity savedCarEntity = carRepository.save(carEntity);
         CarModel mappedCarModel = carMapper.from(savedCarEntity);
         LOGGER.info("create(...) = " + mappedCarModel);
         return mappedCarModel;
     }
 
     // R - read
-    public CarModel read(Long id) {
+    public CarModel read(Long id) throws CarNotFoundException {
+        LOGGER.info("read(" + id + ")");
         Optional<CarEntity> optionalCarEntity = carRepository.findById(id);
-        CarEntity carEntity = optionalCarEntity.orElseThrow();
-
-//        CarModel readCarModel = new CarModel();
-//        readCarModel.setId(carEntity.getId());
-//        readCarModel.setBrand(carEntity.getBrand());
-//        readCarModel.setColor(carEntity.getColor());
+        CarEntity carEntity = optionalCarEntity.orElseThrow(
+                ()-> new CarNotFoundException("Nie znaleziono samochodu o ID " + id));
         CarModel carModel = carMapper.from(carEntity);
+        LOGGER.info("read(...)" + carModel);
         return carModel;
     }
 
-    // TODO: 28.10.2022
-    // Dokończyć implementacje update() oraz delete() analogicznie do create() & read()
-
     // U - update
-    public void update(CarModel car) {
+    public CarModel update(CarModel car) {
         LOGGER.info("update(" + car + ")");
         CarEntity updateCar = carMapper.from(car);
-        carRepository.save(updateCar);
-        LOGGER.info("update(...)" + updateCar);
+        CarEntity saveCarEntity = carRepository.save(updateCar);
+        CarModel carModel = carMapper.from(saveCarEntity);
+        LOGGER.info("update(...)" + carModel);
+        return carModel;
     }
 
     // D - delete
@@ -78,6 +64,12 @@ public class CarService {
     }
 
     // L - list
-    public void list() {
+    public List<CarModel> list() {
+        LOGGER.info("list()");
+        List<CarEntity> carsEntities = carRepository.findAll();
+        // List<CarEntity> przemapować na List<CarModel>
+        List<CarModel> carModels = carMapper.fromList(carsEntities);
+        LOGGER.info("list(...)" + carModels);
+        return carModels;
     }
 }

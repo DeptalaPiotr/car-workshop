@@ -5,7 +5,10 @@ import org.springframework.stereotype.Component;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Component
 public class CarMapper {
@@ -20,17 +23,22 @@ public class CarMapper {
     }
 
     public CarModel from(CarEntity carEntity) {
-        LOGGER.info("from()");
-//        CarModel carModel = new CarModel();
-//        carModel.setId(carEntity.getId());
-//        carModel.setBrand(carEntity.getBrand());
-//        carModel.setColor(carEntity.getColor());
-
+        LOGGER.info("from(" + carEntity + ")");
         ModelMapper modelMapper = new ModelMapper();
         CarModel carModel = modelMapper.map(carEntity, CarModel.class);
         LOGGER.info("from(...) = " + carModel);
         return carModel;
     }
-    // TODO: 28.10.2022
-    // Dodać testy jednoskowe dla obu metod from()
+
+    public List<CarModel> fromList(List<CarEntity> carEntities) {
+        LOGGER.info("fromList(" + carEntities + ")");
+        List<CarModel> carModels = carEntities.stream()
+                .map(this::from)
+                .collect(Collectors.toList());
+        LOGGER.info("fromList(...) = " + carModels);
+        return carModels;
+    }
 }
+// TODO: 03.11.2022
+// napisać metode, która mapuje List<CarEntity> do List<CarModel>
+// testy jednoskowe
