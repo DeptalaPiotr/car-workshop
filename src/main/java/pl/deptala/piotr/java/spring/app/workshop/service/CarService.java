@@ -1,6 +1,7 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
 import org.springframework.stereotype.Service;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.mapper.CarMapper;
@@ -33,10 +34,11 @@ public class CarService {
     }
 
     // R - read
-    public CarModel read(Long id) {
+    public CarModel read(Long id) throws CarNotFoundException {
         LOGGER.info("read(" + id + ")");
         Optional<CarEntity> optionalCarEntity = carRepository.findById(id);
-        CarEntity carEntity = optionalCarEntity.orElseThrow();
+        CarEntity carEntity = optionalCarEntity.orElseThrow(
+                ()-> new CarNotFoundException("Nie znaleziono samochodu o ID " + id));
         CarModel carModel = carMapper.from(carEntity);
         LOGGER.info("read(...)" + carModel);
         return carModel;
