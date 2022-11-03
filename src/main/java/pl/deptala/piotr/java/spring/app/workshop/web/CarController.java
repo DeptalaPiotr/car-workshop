@@ -72,12 +72,8 @@ public class CarController {
     @PostMapping(value = "/update")
     public String update(CarModel car) throws CarNotFoundException {
         LOGGER.info("update(" + car + ")");
-        Optional<CarEntity> updateOptional = carRepository.findById(car.getId());
-        CarEntity carEntity = updateOptional.orElseThrow(
-                () -> new CarNotFoundException("Car whit ID" + updateOptional + " is not found")
-        );
-        // TODO: 28.10.2022  zmienić getReferenceById na findById i zastosować optional analogicznie do metody read()
-        carService.update(car);
+        CarModel updatedCarModel = carService.update(car);
+        LOGGER.info("update(...) = " + updatedCarModel);
         return "redirect:/cars";
     }
 
