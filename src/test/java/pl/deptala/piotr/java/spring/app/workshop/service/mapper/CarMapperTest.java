@@ -37,3 +37,5 @@ class CarMapperTest {
         Assertions.assertNotNull(mappedModel, "mappedModel is NULL");
     }
 }
+// TODO: 03.11.2022
+// testy jednoskowe dla
