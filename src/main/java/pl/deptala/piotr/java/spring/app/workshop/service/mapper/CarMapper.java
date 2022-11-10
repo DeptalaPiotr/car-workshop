@@ -38,6 +38,15 @@ public class CarMapper {
         LOGGER.info("fromList(...) = " + carModels);
         return carModels;
     }
+
+    public List<CarEntity> fromList1(List<CarModel> carModels) {
+        LOGGER.info("fromList(" + carModels + ")");
+        List<CarEntity> carEntities = carModels.stream()
+                .map(this::from)
+                .collect(Collectors.toList());
+        LOGGER.info("fromList(...) = " + carEntities);
+        return carEntities;
+    }
 }
 // TODO: 03.11.2022
 // napisać metode, która mapuje List<CarEntity> do List<CarModel>
