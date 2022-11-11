@@ -29,7 +29,7 @@ public class CarMapper {
         return carModel;
     }
 
-    public List<CarModel> fromEntities(List<CarEntity> carEntities) { // fromList(List<Object> carEntities)
+    public List<CarModel> fromEntities(List<CarEntity> carEntities) {
         LOGGER.info("fromEntities(" + carEntities + ")");
         List<CarModel> carModels = carEntities.stream()
                 .map(this::from)
@@ -46,17 +46,4 @@ public class CarMapper {
         LOGGER.info("fromModels(...) = " + carEntities);
         return carEntities;
     }
-
-    // https://docs.oracle.com/javase/tutorial/java/generics/erasure.html
-//    public void fromList(List<CarModel> carModels) { // fromList(List<Object> carModels)
-//        LOGGER.info("fromList(" + carModels + ")");
-//        List<CarEntity> carEntities = carModels.stream()
-//                .map(this::from)
-//                .collect(Collectors.toList());
-//        LOGGER.info("fromList(...) = " + carEntities);
-////        return carEntities;
-//    }
 }
-// TODO: 03.11.2022
-// napisać metode, która mapuje List<CarEntity> do List<CarModel>
-// testy jednoskowe
