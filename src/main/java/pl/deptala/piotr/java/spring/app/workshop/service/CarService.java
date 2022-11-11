@@ -68,7 +68,7 @@ public class CarService {
         LOGGER.info("list()");
         List<CarEntity> carsEntities = carRepository.findAll();
         // List<CarEntity> przemapować na List<CarModel>
-        List<CarModel> carModels = carMapper.fromList(carsEntities);
+        List<CarModel> carModels = carMapper.fromEntities(carsEntities);
         LOGGER.info("list(...)" + carModels);
         return carModels;
     }

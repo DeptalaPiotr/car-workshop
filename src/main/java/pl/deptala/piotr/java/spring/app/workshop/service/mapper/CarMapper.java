@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,23 +29,33 @@ public class CarMapper {
         return carModel;
     }
 
-    public List<CarModel> fromList(List<CarEntity> carEntities) {
-        LOGGER.info("fromList(" + carEntities + ")");
+    public List<CarModel> fromEntities(List<CarEntity> carEntities) { // fromList(List<Object> carEntities)
+        LOGGER.info("fromEntities(" + carEntities + ")");
         List<CarModel> carModels = carEntities.stream()
                 .map(this::from)
                 .collect(Collectors.toList());
-        LOGGER.info("fromList(...) = " + carModels);
+        LOGGER.info("fromEntities(...) = " + carModels);
         return carModels;
     }
 
-    public List<CarEntity> fromList1(List<CarModel> carModels) {
-        LOGGER.info("fromList(" + carModels + ")");
+    public List<CarEntity> fromModels(List<CarModel> carModels) {
+        LOGGER.info("fromModels(" + carModels + ")");
         List<CarEntity> carEntities = carModels.stream()
                 .map(this::from)
                 .collect(Collectors.toList());
-        LOGGER.info("fromList(...) = " + carEntities);
+        LOGGER.info("fromModels(...) = " + carEntities);
         return carEntities;
     }
+
+    // https://docs.oracle.com/javase/tutorial/java/generics/erasure.html
+//    public void fromList(List<CarModel> carModels) { // fromList(List<Object> carModels)
+//        LOGGER.info("fromList(" + carModels + ")");
+//        List<CarEntity> carEntities = carModels.stream()
+//                .map(this::from)
+//                .collect(Collectors.toList());
+//        LOGGER.info("fromList(...) = " + carEntities);
+////        return carEntities;
+//    }
 }
 // TODO: 03.11.2022
 // napisać metode, która mapuje List<CarEntity> do List<CarModel>

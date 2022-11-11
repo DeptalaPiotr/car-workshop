@@ -46,7 +46,7 @@ class CarMapperTest {
         List<CarEntity> carEntityList = new ArrayList<>();
 
         // When
-        List<CarModel> carModelList = carMapper.fromList(carEntityList);
+        List<CarModel> carModelList = carMapper.fromEntities(carEntityList);
 
         // Then
         Assertions.assertNotNull(carModelList, "converted List is NULL");
@@ -58,7 +58,7 @@ class CarMapperTest {
         List<CarModel> carModelList = new ArrayList<>();
 
         // When
-        List<CarEntity> carEntityList = carMapper.fromList1(carModelList);
+        List<CarEntity> carEntityList = carMapper.fromModels(carModelList);
 
         // Then
         Assertions.assertNotNull(carEntityList, "carEntityList List is NULL");
