@@ -19,9 +19,9 @@ public class CarController {
 
     private static final Logger LOGGER = Logger.getLogger(CarController.class.getName());
 
-    private CarService carService;
+    private CarService carService; // zależność
 
-    public CarController(CarService carService) {
+    public CarController(CarService carService) { // wtrzyknięcie zależnosci
         this.carService = carService;
     }
 
@@ -32,10 +32,13 @@ public class CarController {
     }
 
     // C - create
+    // Controller sluży do pobierania danych od użytkownika np: http,cli
+    // metody w kontrolerze służą do weryfikacji/walidacji danych wprowadzonych przez użytkownika
+    // Metody nie powinny zawierać logiki biznesowej
     @PostMapping
     public String create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
-        CarModel createdCarModel = carService.create(carModel);
+        CarModel createdCarModel = carService.create(carModel); // delegacja wywołania metody
         LOGGER.info("create(...)=" + createdCarModel);
         return "redirect:/cars";
     }
