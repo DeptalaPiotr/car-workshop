@@ -24,6 +24,8 @@ public class CarService {
     }
 
     // C - create
+    // Serwis zawiera logikę biznesową
+    // Operując na instnejecych danych w systemie i danych danych wprowadzonych przez użytkownika
     public CarModel create(CarModel carModel) {
         LOGGER.info("create(" + carModel + ")");
         CarEntity carEntity = carMapper.from(carModel);
