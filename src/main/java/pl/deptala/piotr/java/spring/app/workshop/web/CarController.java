@@ -76,7 +76,7 @@ public class CarController {
 
     // D - delete
     @GetMapping(value = "/delete/{id}")
-    public String delete(@PathVariable(name = "id") Long id) {
+    public String delete(@PathVariable(name = "id") Long id) throws CarNotFoundException{
         LOGGER.info("delete(" + id + ")");
         carService.delete(id);
         return "redirect:/cars";
