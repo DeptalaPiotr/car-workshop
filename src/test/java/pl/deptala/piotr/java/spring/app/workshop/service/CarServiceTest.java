@@ -66,7 +66,7 @@ class CarServiceTest {
     }
 
     @Test
-    void delete() {
+    void delete() throws CarNotFoundException {
         // Given
         CarModel carModel = new CarModel();
         long id = 4588;
