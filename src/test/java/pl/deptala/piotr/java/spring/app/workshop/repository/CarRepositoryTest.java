@@ -41,4 +41,4 @@ class CarRepositoryTest {
 // TODO: 11.11.2022
 // https://rapidapi.com/vinfreecheck/api/vin-decoder-1
 // analogicznie do projektu currency-conventer użyć zewnętrznego api do weryfikacji nr VIN pojazdu
-// napisać test jednoskowy dla CarService sprawdzający czy metoda read() ucza wyjątek dla nie poprawnego ID samochodu
+// napisać test jednoskowy dla CarService sprawdzający czy metoda read() rzuca wyjątek dla nie poprawnego ID samochodu

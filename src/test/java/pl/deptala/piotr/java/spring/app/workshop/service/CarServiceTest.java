@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
@@ -48,6 +49,17 @@ class CarServiceTest {
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(readCarModel, "readCarModel is NULL"),
                 () -> Assertions.assertNotNull(readCarModel.getId(), "readCarModel ID is NULL"));
+    }
+
+    @Test
+    void readWrongId() throws CarNotFoundException {
+        // Given
+        CarModel carModel = new CarModel();
+        Long carModelId = carModel.getId();
+        // When
+        // Then
+        Assertions.assertThrows(CarNotFoundException.class, () ->
+                carService.read(888L));
     }
 
     @Test
