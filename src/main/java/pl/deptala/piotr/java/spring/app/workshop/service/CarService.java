@@ -1,5 +1,8 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.springframework.stereotype.Service;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
@@ -7,13 +10,17 @@ import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.mapper.CarMapper;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 @Service
 public class CarService {
     private static final Logger LOGGER = Logger.getLogger(CarService.class.getName());
+    private final ResourceBundle readCredentials = ResourceBundle.getBundle("application");
+    private final String apiUrl = readCredentials.getString("rates.api.url");
 
     private CarRepository carRepository;
     private CarMapper carMapper;
@@ -75,5 +82,19 @@ public class CarService {
         List<CarModel> carModels = carMapper.fromEntities(carsEntities);
         LOGGER.info("list(...)" + carModels);
         return carModels;
+    }
+
+    public Response vinCheck(Long vin) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://vindecoder.p.rapidapi.com/decode_vin?vin=" + vin + "")
+                .get()
+                .addHeader("X-RapidAPI-Key", "SIGN-UP-FOR-KEY")
+                .addHeader("X-RapidAPI-Host", "vindecoder.p.rapidapi.com")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response;
     }
 }

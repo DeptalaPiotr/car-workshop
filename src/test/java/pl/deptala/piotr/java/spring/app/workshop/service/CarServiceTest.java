@@ -55,7 +55,8 @@ class CarServiceTest {
     void readWrongId() throws CarNotFoundException {
         // Given
         CarModel carModel = new CarModel();
-        Long carModelId = carModel.getId();
+        Long carModelId = carModel.getId(); // ID jest nadawane automatycznie
+
         // When
         // Then
         Assertions.assertThrows(CarNotFoundException.class, () ->
