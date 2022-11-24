@@ -93,7 +93,7 @@ public class CarController {
         return "list-cars";
     }
 
-    public Response vinCheck (Long vin) throws IOException {
+    public Response vinCheck (String vin) throws IOException {
         Response carVin = carService.vinCheck(vin);
         return carVin;
     }

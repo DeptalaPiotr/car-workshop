@@ -1,5 +1,6 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
+import okhttp3.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundExcept
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,6 +117,15 @@ class CarServiceTest {
                 () -> Assertions.assertNotNull(list, "list is NULL"));
 
     }
+
+    @Test
+    void vinCheck() throws IOException {
+        // Given
+        String vin = "4F2YU09161KM33122";
+        // When
+        Response carVin = carService.vinCheck(vin);
+        // Then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(carVin, "Car VIN is NULL"));
+    }
 }
-// TODO: 03.11.2022
-// Dodać testy do pozostałych metod CRUD

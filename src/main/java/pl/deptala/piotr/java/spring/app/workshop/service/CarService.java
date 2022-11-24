@@ -84,7 +84,7 @@ public class CarService {
         return carModels;
     }
 
-    public Response vinCheck(Long vin) throws IOException {
+    public Response vinCheck(String vin) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
