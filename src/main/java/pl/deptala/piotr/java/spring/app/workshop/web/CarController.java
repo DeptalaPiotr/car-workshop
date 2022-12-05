@@ -93,8 +93,12 @@ public class CarController {
         return "list-cars";
     }
 
+    // Vin Check
+    @GetMapping(value = "/list-cars/{vin}")
     public Response vinCheck (String vin) throws IOException {
+        LOGGER.info("vinCheck()");
         Response carVin = carService.vinCheck(vin);
+        LOGGER.info("vinCheck(...)");
         return carVin;
     }
 }
