@@ -16,6 +16,7 @@
                 <th> Id </th>
                 <th> Brand </th>
                 <th> Color </th>
+                <th> VIN </th>
                 <th> Read </th>
                 <th> Update </th>
                 <th> Delete </th>
@@ -29,6 +30,7 @@
                 <td><span th:text="${car.id}"> Id </span></td>
                 <td><span th:text="${car.brand}"> Brand </span></td>
                 <td><span th:text="${car.color}"> Color </span></td>
+                <td><span th:text="${car.color}"> VIN </span></td>
                 <td><a href="#" th:href="@{/cars/{id}(id=${car.id})}" >Read </a></td>
                 <td><a href="#" th:href="@{/cars/update/{id}(id=${car.id})}">Update </a></td>
                 <td><a href="#" th:href="@{/cars/delete/{id}(id=${car.id})}" >Delete </a></td>
@@ -38,6 +40,17 @@
     </div>
     <div>
         <a href="#" th:href="@{/cars/create}" > Create </a>
+    </div>
+    <div>
+<p>
+</p>
+    </div>
+    <div>
+        <form action="/cars" method="post">
+            <label for="vin">Check Vin:</label><br>
+            <input type="text" id="vin" ><br>
+            <input type="submit" value="Submit">
+        </form>
     </div>
 </div>
 </body>

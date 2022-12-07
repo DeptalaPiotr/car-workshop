@@ -1,5 +1,6 @@
 package pl.deptala.piotr.java.spring.app.workshop.web;
 
+import okhttp3.Response;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundExcept
 import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -47,7 +49,7 @@ public class CarController {
     @GetMapping(value = "/{id}")
     public String read(
             @PathVariable(name = "id") Long id, ModelMap modelMap)
-            throws CarNotFoundException {
+            throws CarNotFoundException, IOException {
         LOGGER.info("read(" + id + ")");
         CarModel carModel = carService.read(id);
         modelMap.addAttribute("readCar", carModel);
@@ -89,5 +91,14 @@ public class CarController {
         modelMap.addAttribute("cars", cars);
         LOGGER.info("list() = " + cars);
         return "list-cars";
+    }
+
+    // Vin Check
+    @GetMapping(value = "/list-cars/{vin}")
+    public Response vinCheck (String vin) throws IOException {
+        LOGGER.info("vinCheck()");
+        Response carVin = carService.vinCheck(vin);
+        LOGGER.info("vinCheck(...)");
+        return carVin;
     }
 }
