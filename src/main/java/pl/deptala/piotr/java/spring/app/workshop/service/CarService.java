@@ -1,14 +1,17 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
+import com.google.gson.Gson;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.mapper.CarMapper;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.VinSpecification;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,17 +87,21 @@ public class CarService {
         return carModels;
     }
 
-    public Response vinCheck(String vin) throws IOException {
+    public VinSpecification vinCheck(String vin) throws IOException {
+        LOGGER.info("vinCheck()");
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
                 .url("https://vindecoder.p.rapidapi.com/decode_vin?vin=" + vin + "")
                 .get()
-                .addHeader("X-RapidAPI-Key", "SIGN-UP-FOR-KEY")
+                .addHeader("X-RapidAPI-Key", "68e9b145d3msh83365db9e0e56c2p1122c4jsn5a1a9e5f71e3")
                 .addHeader("X-RapidAPI-Host", "vindecoder.p.rapidapi.com")
                 .build();
 
         Response response = client.newCall(request).execute();
-        return response;
+        Gson g = new Gson();
+        VinSpecification vinSpecification = g.fromJson(response.body().string(), VinSpecification.class);
+        LOGGER.info("vinCheck(...)= " + vinSpecification);
+        return vinSpecification;
     }
 }

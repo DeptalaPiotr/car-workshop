@@ -9,6 +9,7 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.VinSpecification;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ class CarServiceTest {
         // Given
         String vin = "4F2YU09161KM33122";
         // When
-        Response carVin = carService.vinCheck(vin);
+        VinSpecification carVin = carService.vinCheck(vin);
         // Then
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(carVin, "Car VIN is NULL"));

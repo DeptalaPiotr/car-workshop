@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.VinSpecification;
 
 import java.io.IOException;
 import java.util.List;
@@ -94,11 +95,11 @@ public class CarController {
     }
 
     // Vin Check
-    @GetMapping(value = "/list-cars/{vin}")
-    public Response vinCheck (String vin) throws IOException {
+    @GetMapping(value = "/check/vin/{vin}")
+    public VinSpecification vinCheck (String vin) throws IOException {
         LOGGER.info("vinCheck()");
-        Response carVin = carService.vinCheck(vin);
+        VinSpecification vinSpecification = carService.vinCheck(vin);
         LOGGER.info("vinCheck(...)");
-        return carVin;
+        return vinSpecification;
     }
 }
