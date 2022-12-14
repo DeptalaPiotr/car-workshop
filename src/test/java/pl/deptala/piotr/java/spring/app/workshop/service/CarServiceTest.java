@@ -122,7 +122,7 @@ class CarServiceTest {
     @Test
     void vinCheck() throws IOException {
         // Given
-        String vin = "4F2YU09161KM33122";
+        String vin = "1GNALDEK9FZ108495";
         // When
         VinSpecification carVin = carService.vinCheck(vin);
         // Then

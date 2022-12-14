@@ -92,11 +92,13 @@ public class CarService {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("https://vindecoder.p.rapidapi.com/decode_vin?vin=" + vin + "")
+                .url("http://api.carmd.com/v3.0/decode?vin=" + vin + "")
                 .get()
-                .addHeader("X-RapidAPI-Key", "68e9b145d3msh83365db9e0e56c2p1122c4jsn5a1a9e5f71e3")
-                .addHeader("X-RapidAPI-Host", "vindecoder.p.rapidapi.com")
+                .addHeader("content-type", "application/json")
+                .addHeader("authorization", "MjZiYWViMjgtYTliOC00MTU2LWJlZmYtM2IyMmU4YThlYjQ4")
+                .addHeader("partner-token", "eee3532e3a0a4dcc89af7fdc86452850")
                 .build();
+
 
         Response response = client.newCall(request).execute();
         Gson g = new Gson();
