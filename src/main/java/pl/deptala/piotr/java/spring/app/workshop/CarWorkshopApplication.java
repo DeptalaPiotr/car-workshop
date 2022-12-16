@@ -13,5 +13,4 @@ public class CarWorkshopApplication {
     // zapoznac się i przecwiczyć testowanie warstwy web
     // tutorial: https://spring.io/guides/gs/testing-web/
     // code: https://github.com/spring-guides/gs-testing-web
-
 }
