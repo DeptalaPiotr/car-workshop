@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -44,7 +43,6 @@ public class CarWebApplicationTest {
         // When
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .post(endPoint)
-                .content(String.valueOf(new CarModel()))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -75,7 +73,7 @@ public class CarWebApplicationTest {
         String updateUrl = "/update/{id}";
 
         // When
-        ResultActions resultActions = mockMvc.perform(get(updateUrl));
+        ResultActions resultActions = mockMvc.perform(post(updateUrl));
 
         // Then
         resultActions
@@ -102,9 +100,9 @@ public class CarWebApplicationTest {
     @Test
     void vinCheckEndPoint() throws Exception {
         // Given
+        String urlTemplate = "/cars/check/vin/{vin}";
 
         // When
-        String urlTemplate = "/cars/check/vin/{vin}";
         ResultActions resultActions = mockMvc.perform(get(urlTemplate));
 
         // Then

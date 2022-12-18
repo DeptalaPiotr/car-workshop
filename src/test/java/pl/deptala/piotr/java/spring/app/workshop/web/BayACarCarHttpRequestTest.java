@@ -8,7 +8,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CarHttpRequestTest {
+public class BayACarCarHttpRequestTest {
 
     @LocalServerPort
     private int port;
@@ -16,10 +16,10 @@ public class CarHttpRequestTest {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    void given_when_then() {
+    void bayEndpoint() {
         // Given
-        String url = "http://localhost:" + port + "/cars";
-        String listCarsHtmlFragment = "List Cars";
+        String url = "http://localhost:" + port + "/bay";
+        String bay = "List Cars to bay";
 
         // When
         String forObject = testRestTemplate.getForObject(url, String.class);
@@ -27,24 +27,6 @@ public class CarHttpRequestTest {
         // Then
         Assertions
                 .assertThat(forObject)
-                .contains(listCarsHtmlFragment);
-    }
-
-    @Test
-    void create_endpoint(){
-        // Given
-        String url = "http://localhost:" + port + "/cars/create";
-        String updateCar = "Create Car";
-
-        // When
-        String forObject = testRestTemplate.getForObject(url, String.class);
-
-        // Then
-        Assertions
-                .assertThat(forObject)
-                .contains(updateCar);
-
+                .contains(bay);
     }
 }
-// TODO: 16.12.2022
-// Dopisać analogiczny test dla innego adresu url wyświetającą inna stronę html

@@ -11,14 +11,22 @@ public class SmokeTest {
 
 	@Autowired
 	private CarController controller;
+	@Autowired
+	private BayACarController bayACarController;
 
 	@Test
 	public void contextLoads() throws Exception {
 		assertThat(controller).isNotNull();
+
+	}
+
+	@Test
+	public void bayCarController() throws Exception{
+		assertThat(bayACarController).isNotNull();
 	}
 }
 // TODO: 16.12.2022
-// Stworzyć nowy kontroller dla modelu service
+// Stworzyć nowy controller dla modelu service
 // Dodać przynajmniej jeden endpoint
 // Dla dopisanego endpoint stworzyć nowe klasy testowe:
 // - httpRequestTest

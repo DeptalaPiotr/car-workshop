@@ -8,14 +8,14 @@ import javax.persistence.Id;
 public class BayACarEntity {
     @Id
     @GeneratedValue
-    private long id;
-    private int price;
+    private Long id;
+    private Integer price;
     public String car;
 
     public BayACarEntity() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -23,7 +23,7 @@ public class BayACarEntity {
         this.id = id;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
