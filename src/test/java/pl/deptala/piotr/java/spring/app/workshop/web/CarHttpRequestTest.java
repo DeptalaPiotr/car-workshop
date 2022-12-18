@@ -28,3 +28,5 @@ public class CarHttpRequestTest {
         Assertions.assertThat(forObject).contains(listCarsHtmlFragment);
     }
 }
+// TODO: 16.12.2022
+// Dopisać analogiczny test dla innego adresu url wyświetającą inna stronę html

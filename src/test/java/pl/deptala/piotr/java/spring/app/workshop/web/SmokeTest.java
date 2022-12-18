@@ -17,3 +17,9 @@ public class SmokeTest {
 		assertThat(controller).isNotNull();
 	}
 }
+// TODO: 16.12.2022
+// Stworzyć nowy kontroller dla modelu service
+// Dodać przynajmniej jeden endpoint
+// Dla dopisanego endpoint stworzyć nowe klasy testowe:
+// - httpRequestTest
+// - webApplicationTest
