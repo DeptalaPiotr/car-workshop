@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> List Cars to bay </title>
+</head>
+
+<body>
+<div>
+    <h1> List Cars to bay </h1>
+    <!--    <div th:text="${cars}"></div>-->
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th> Id </th>
+                <th> Car </th>
+                <th> Price </th>
+                <th> Read </th>
+                <th> Update </th>
+                <th> Delete </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${bayList.empty}">
+                <td colspan="2"> No Cars Available </td>
+            </tr>
+            <tr th:each="bayCar : ${bayList}">
+<!--                <td><span th:text="${bayCar.id}"> Id </span></td>-->
+                <td><span th:text="${bayCar.price}"> Price </span></td>
+                <td><span th:text="${bayCar.car}"> Car </span></td>
+<!--                <td><a href="#" th:href="@{/cars/{id}(id=${bayCar.id})}" >Read </a></td>-->
+<!--                <td><a href="#" th:href="@{/cars/update/{id}(id=${bayCar.id})}">Update </a></td>-->
+<!--                <td><a href="#" th:href="@{/cars/delete/{id}(id=${bayCar.id})}" >Delete </a></td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a href="#" th:href="@{/cars/create}" > Create </a>
+    </div>
+    <div>
+        <p>
+        </p>
+    </div>
+</div>
+</body>
+</html>
