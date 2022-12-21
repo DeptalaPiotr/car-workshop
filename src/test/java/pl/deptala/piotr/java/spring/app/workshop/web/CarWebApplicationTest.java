@@ -1,5 +1,6 @@
 package pl.deptala.piotr.java.spring.app.workshop.web;
 
+import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -38,19 +40,31 @@ public class CarWebApplicationTest {
     @Test
     void createEndPoint() throws Exception {
         // Given
-        String endPoint = "/cars/create";
+        String endPoint = "/cars";
+
+        CarModel carModel = new CarModel();
+        carModel.setBrand("BMW");
+        carModel.setColor("White");
+
+        Gson gson = new Gson();
+        String carModelJson = gson.toJson(carModel, CarModel.class);
 
         // When
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON).content(carModelJson)
                 .accept(MediaType.APPLICATION_JSON));
 
+        System.out.println("Car Model Json " + carModelJson);
+//
+//        this.mockmvc.perform(put("/someUrl/")
+//                        .contentType(MediaType.APPLICATION_JSON).content(json))
+//                .andExpect(status().isOk());
 
         // Then
         resultActions
-                .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeId").exists());
+                .andExpect(status().is3xxRedirection());
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeId").exists());
     }
 
     @Test
@@ -59,7 +73,7 @@ public class CarWebApplicationTest {
         String readUrl = "/cars/{id}";
 
         // When
-        ResultActions resultActions = mockMvc.perform(get(readUrl));
+        ResultActions resultActions = mockMvc.perform(get(readUrl, 1));
 
         // Then
         resultActions
@@ -70,10 +84,10 @@ public class CarWebApplicationTest {
     @Test
     void updateEndPoint() throws Exception {
         // Given
-        String updateUrl = "/update/{id}";
+        String updateUrl = "/cars/update/{id}";
 
         // When
-        ResultActions resultActions = mockMvc.perform(post(updateUrl));
+        ResultActions resultActions = mockMvc.perform(get(updateUrl, 1));
 
         // Then
         resultActions
@@ -88,7 +102,7 @@ public class CarWebApplicationTest {
 
         // When
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
-                .delete(deleteUrl)
+                .get(deleteUrl, "1")
                 .contentType(MediaType.APPLICATION_JSON));
 
         // Then
