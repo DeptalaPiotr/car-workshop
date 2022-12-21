@@ -10,6 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -46,16 +48,21 @@ public class CarWebApplicationTest {
         carModel.setBrand("BMW");
         carModel.setColor("White");
 
-        Gson gson = new Gson();
-        String carModelJson = gson.toJson(carModel, CarModel.class);
+//        Gson gson = new Gson();
+//        String carModelJson = gson.toJson(carModel, CarModel.class);
+//        System.out.println("Car Model Json " + carModelJson);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("brand", carModel.getBrand());
+        params.add("color", carModel.getColor());
 
         // When
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON).content(carModelJson)
+                .params(params)
+//                .contentType(MediaType.APPLICATION_JSON).content(carModelJson)
                 .accept(MediaType.APPLICATION_JSON));
 
-        System.out.println("Car Model Json " + carModelJson);
 //
 //        this.mockmvc.perform(put("/someUrl/")
 //                        .contentType(MediaType.APPLICATION_JSON).content(json))
