@@ -14,7 +14,7 @@ class ServiceServiceTest {
     @Test
     void create() {
         // Given
-        ServiceModel serviceModel= new ServiceModel();
+        ServiceModel serviceModel = new ServiceModel();
 
         // When
         ServiceModel createdServiceModel = serviceService.create(serviceModel);
