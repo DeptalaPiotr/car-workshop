@@ -1,11 +1,11 @@
 package pl.deptala.piotr.java.spring.app.workshop.web;
 
-import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
+import org.springframework.stereotype.Controller;
 
 import java.util.logging.Logger;
 
-public class
-ServiceController {
+@Controller
+public class ServiceController {
     private static final Logger LOGGER = Logger.getLogger(ServiceController.class.getName());
     // C - create
     public void create() {

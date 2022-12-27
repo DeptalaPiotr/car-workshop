@@ -1,7 +1,10 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
+import org.springframework.stereotype.Service;
+
 import java.util.logging.Logger;
 
+@Service
 public class ServiceService {
     private static final Logger LOGGER = Logger.getLogger(ServiceService.class.getName());
 
