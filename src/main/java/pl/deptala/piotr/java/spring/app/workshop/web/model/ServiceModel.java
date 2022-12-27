@@ -1,34 +1,18 @@
-package pl.deptala.piotr.java.spring.app.workshop.repository.entity;
+package pl.deptala.piotr.java.spring.app.workshop.web.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+public class ServiceModel {
 
-@Entity
-public class ServiceEntity {
-    @Id
-    @GeneratedValue
-    private Long id;
     private double price;
     private String date;
     private String name;
 
-    public ServiceEntity() {
+    public ServiceModel() {
     }
 
-    public ServiceEntity(Long id, double price, String date, String name) {
-        this.id = id;
+    public ServiceModel(double price, String date, String name) {
         this.price = price;
         this.date = date;
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public double getPrice() {
@@ -57,9 +41,8 @@ public class ServiceEntity {
 
     @Override
     public String toString() {
-        return "ServiceEntity{" +
-                "id=" + id +
-                ", price=" + price +
+        return "ServiceModel{" +
+                "price=" + price +
                 ", date='" + date + '\'' +
                 ", name='" + name + '\'' +
                 '}';
