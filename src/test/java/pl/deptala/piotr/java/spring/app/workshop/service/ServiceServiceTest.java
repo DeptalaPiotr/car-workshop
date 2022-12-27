@@ -64,7 +64,22 @@ class ServiceServiceTest {
     }
 
     @Test
-    void delete() {
+    void delete() throws ServiceNotFoundException {
+        // Given
+        ServiceModel serviceModel = new ServiceModel();
+        ServiceEntity mappedEntity = serviceMapper.from(serviceModel);
+        Long id = mappedEntity.getId();
+        ServiceModel mappedModel = serviceMapper.from(mappedEntity);
+        ServiceModel savedCarModel = serviceService.create(mappedModel);
+
+        // When
+
+        serviceService.delete(id);
+
+        // Then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(savedCarModel, "deleteCarModel is NULL"));
+//                () -> Assertions.assertNotNull(savedCarModel.getId(), "deleteCarModel ID is NULL"));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
 import org.springframework.stereotype.Service;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.ServiceNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.ServiceRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
@@ -57,9 +58,13 @@ public class ServiceService {
 
 
         // D - delete
-    public void delete() {
-        LOGGER.info("delete()");
-        LOGGER.info("delete(...)");
+    public void delete(Long id) throws ServiceNotFoundException {
+        LOGGER.info("delete(" + id + ")");
+        Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
+        ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow(
+                () -> new ServiceNotFoundException("Nie znaleziono serwisu o ID " + id));
+        serviceRepository.delete(serviceEntity);
+        LOGGER.info("delete(...)" + serviceEntity);
     }
 
     // L - list
