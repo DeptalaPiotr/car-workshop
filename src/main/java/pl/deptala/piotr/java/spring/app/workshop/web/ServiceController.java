@@ -2,6 +2,7 @@ package pl.deptala.piotr.java.spring.app.workshop.web;
 
 public class
 ServiceController {
+
 }
 
 // TODO: 21.12.2022
