@@ -1,13 +1,10 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
 import org.springframework.stereotype.Service;
-import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.ServiceNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.ServiceRepository;
-import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.ServiceEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.mapper.ServiceMapper;
-import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
 import java.util.List;
