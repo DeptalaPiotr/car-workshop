@@ -1,7 +1,6 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
 import org.springframework.stereotype.Service;
-import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.ServiceNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.ServiceRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
@@ -47,12 +46,17 @@ public class ServiceService {
     }
 
     // U - update
-    public void update() {
-        LOGGER.info("update()");
-        LOGGER.info("update(...)");
-    }
+        public ServiceModel update(ServiceModel serviceModel) {
+            LOGGER.info("update(" + serviceModel + ")");
+            ServiceEntity updateService = serviceMapper.from(serviceModel);
+            ServiceEntity saveCarEntity = serviceRepository.save(updateService);
+            ServiceModel mappedServiceModel = serviceMapper.from(saveCarEntity);
+            LOGGER.info("update(...)" + mappedServiceModel);
+            return mappedServiceModel;
+        }
 
-    // D - delete
+
+        // D - delete
     public void delete() {
         LOGGER.info("delete()");
         LOGGER.info("delete(...)");

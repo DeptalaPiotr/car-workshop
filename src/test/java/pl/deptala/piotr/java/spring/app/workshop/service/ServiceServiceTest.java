@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.ServiceNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.ServiceEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.mapper.ServiceMapper;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
 @SpringBootTest
@@ -48,6 +49,18 @@ class ServiceServiceTest {
 
     @Test
     void update() {
+        // Given
+       ServiceModel serviceModel= new ServiceModel();
+        serviceModel.setPrice(14.77);
+        serviceModel.setName("Service to do");
+        serviceModel.setDate("31.12.2022");
+        // When
+        ServiceModel updateServiceModel = serviceService.update(serviceModel);
+        // Then
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(updateServiceModel, "updateCarModel is NULL"));
+//                () -> Assertions.assertNotNull(updateServiceModel.getId(), "updateCarModel ID is NULL"));
+
     }
 
     @Test
