@@ -10,6 +10,9 @@ import pl.deptala.piotr.java.spring.app.workshop.service.mapper.ServiceMapper;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootTest
 class ServiceServiceTest {
     @Autowired
@@ -84,5 +87,22 @@ class ServiceServiceTest {
 
     @Test
     void list() {
+        // Given
+        ServiceModel oil = new ServiceModel();
+        ServiceModel filters = new ServiceModel();
+        ServiceModel oilModel = serviceService.create(oil);
+        ServiceModel filtersModel = serviceService.create(filters);
+
+        List<ServiceModel> testedList = new ArrayList<>();
+        testedList.add(oilModel);
+        testedList.add(filtersModel);
+
+        // When
+        List<ServiceModel> list = serviceService.list();
+
+        // ThenK
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(list, "list is NULL"));
+
     }
 }

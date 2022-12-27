@@ -10,6 +10,7 @@ import pl.deptala.piotr.java.spring.app.workshop.service.mapper.ServiceMapper;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -68,8 +69,11 @@ public class ServiceService {
     }
 
     // L - list
-    public void list() {
+    public List<ServiceModel> list() {
         LOGGER.info("list()");
-        LOGGER.info("list(...)");
+        List<ServiceEntity> serviceEntities = serviceRepository.findAll();
+        List<ServiceModel> serviceModels = serviceMapper.fromEntities(serviceEntities);
+        LOGGER.info("list(...)" + serviceModels);
+        return serviceModels;
     }
 }
