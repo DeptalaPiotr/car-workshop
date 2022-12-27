@@ -1,11 +1,16 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
 import org.springframework.stereotype.Service;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.ServiceNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.ServiceRepository;
+import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.ServiceEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.mapper.ServiceMapper;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -31,9 +36,14 @@ public class ServiceService {
     }
 
     // R - read
-    public void read() {
-        LOGGER.info("read()");
-        LOGGER.info("read(...)");
+    public ServiceModel read(Long id) throws ServiceNotFoundException {
+        LOGGER.info("read(" + id + ")");
+        Optional<ServiceEntity> optionalServiceEntity = serviceRepository.findById(id);
+        ServiceEntity serviceEntity = optionalServiceEntity.orElseThrow(
+                () -> new ServiceNotFoundException("Nie znaleziono usługi o ID " + id));
+        ServiceModel serviceModel = serviceMapper.from(serviceEntity);
+        LOGGER.info("read(...)" + serviceModel);
+        return serviceModel;
     }
 
     // U - update
