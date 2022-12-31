@@ -1,16 +1,38 @@
 package pl.deptala.piotr.java.spring.app.workshop.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import pl.deptala.piotr.java.spring.app.workshop.service.ServiceService;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
+@RequestMapping(value = "/service")
 public class ServiceController {
     private static final Logger LOGGER = Logger.getLogger(ServiceController.class.getName());
+    private ServiceService serviceService;
+
+    public ServiceController(ServiceService serviceService) {
+        this.serviceService = serviceService;
+    }
+
     // C - create
-    public void create() {
-        LOGGER.info("create()");
-        LOGGER.info("create(...)");
+    @GetMapping(value = "/create")
+    public String createView() {
+        LOGGER.info("createView()");
+        return "create-service";
+    }
+    @PostMapping
+    public String create(ServiceModel serviceModel) {
+        LOGGER.info("create(" + serviceModel + ")");
+        ServiceModel createdServiceModel = serviceService.create(serviceModel);
+        LOGGER.info("create(...)=" + createdServiceModel);
+        return "service-list";
     }
 
     // R - read
@@ -32,9 +54,11 @@ public class ServiceController {
     }
 
     // L - list
-    public void list() {
-        LOGGER.info("list()");
-        LOGGER.info("list(...)");
+    public String list(ModelMap modelMap) {
+        List<ServiceModel> services = serviceService.list();
+        modelMap.addAttribute("services", services);
+        LOGGER.info("list() = " + services);
+        return "service-list";
     }
 
 }
