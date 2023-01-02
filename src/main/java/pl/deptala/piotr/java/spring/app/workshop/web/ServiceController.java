@@ -3,11 +3,16 @@ package pl.deptala.piotr.java.spring.app.workshop.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.ServiceNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.service.ServiceService;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -36,21 +41,41 @@ public class ServiceController {
     }
 
     // R - read
-    public void read() {
-        LOGGER.info("read()");
-        LOGGER.info("read(...)");
+    @GetMapping(value = "/{id}")
+    public String read(
+            @PathVariable(name = "id") Long id, ModelMap modelMap)
+            throws ServiceNotFoundException, IOException {
+        LOGGER.info("read(" + id + ")");
+        ServiceModel serviceModel = serviceService.read(id);
+        modelMap.addAttribute("readService", serviceModel);
+        return "";
     }
 
     // U - update
-    public void update() {
-        LOGGER.info("update()");
-        LOGGER.info("update(...)");
+        @GetMapping(value = "/update/{id}")
+        public String updateView(
+                @PathVariable(name = "id") Long id, ModelMap modelMap)
+            throws ServiceNotFoundException {
+            LOGGER.info("updateView()" + id + "");
+            ServiceModel serviceModel1 = serviceService.read(id);
+            modelMap.addAttribute("car", serviceModel1);
+            return "";
+    }
+
+    @PostMapping(value = "/update")
+    public String update(ServiceModel serviceModel) throws ServiceNotFoundException {
+        LOGGER.info("update(" + serviceModel + ")");
+        ServiceModel updatedServiceModel = serviceService.update(serviceModel);
+        LOGGER.info("update(...) = " + updatedServiceModel);
+        return "";
     }
 
     // D - delete
-    public void delete() {
-        LOGGER.info("delete()");
-        LOGGER.info("delete(...)");
+    @GetMapping(value = "/delete/{id}")
+    public String delete(@PathVariable(name = "id") Long id) throws ServiceNotFoundException{
+        LOGGER.info("delete(" + id + ")");
+        serviceService.delete(id);
+        return "";
     }
 
     // L - list
