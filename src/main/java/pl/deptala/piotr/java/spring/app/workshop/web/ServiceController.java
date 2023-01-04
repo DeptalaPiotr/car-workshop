@@ -73,7 +73,7 @@ public class ServiceController {
     public String delete(@PathVariable(name = "id") Long id) throws ServiceNotFoundException{
         LOGGER.info("delete(" + id + ")");
         serviceService.delete(id);
-        return "";
+        return "redirect:/services";
     }
 
     // L - list

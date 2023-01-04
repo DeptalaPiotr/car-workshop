@@ -22,17 +22,17 @@
             </tr>
             </thead>
             <tbody>
-<!--            <tr th:if="${services.empty}">-->
-<!--                <td colspan="2"> No Cars Available</td>-->
+            <tr th:if="${services.empty}">
+                <td colspan="2"> No Services Available</td>
             </tr>
             <tr th:each="service : ${services}">
-<!--                <td><span th:text="${service.id}"> Id </span></td>-->
+                <td><span th:text="${service.id}"> Id </span></td>
                 <td><span th:text="${service.name}"> Service Type </span></td>
                 <td><span th:text="${service.date}"> Date </span></td>
                 <td><span th:text="${service.price}"> Price </span></td>
-                <!--        <td><a href="#" th:href="@{/cars/{id}(id=${car.id})}" >Read </a></td>-->
-                <!--        <td><a href="#" th:href="@{/cars/update/{id}(id=${car.id})}">Update </a></td>-->
-                <!--        <td><a href="#" th:href="@{/cars/delete/{id}(id=${car.id})}" >Delete </a></td>-->
+                        <td><a href="#" th:href="@{/services/{id}(id=${service.id})}" >Read </a></td>
+                        <td><a href="#" th:href="@{/services/update/{id}(id=${service.id})}">Update </a></td>
+                        <td><a href="#" th:href="@{/services/delete/{id}(id=${service.id})}" >Delete </a></td>
             </tr>
             </tbody>
         </table>
