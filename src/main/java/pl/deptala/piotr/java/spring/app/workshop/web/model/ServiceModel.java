@@ -2,6 +2,7 @@ package pl.deptala.piotr.java.spring.app.workshop.web.model;
 
 public class ServiceModel {
 
+    private Long id;
     private double price;
     private String date;
     private String name;
@@ -9,10 +10,20 @@ public class ServiceModel {
     public ServiceModel() {
     }
 
-    public ServiceModel(double price, String date, String name) {
+
+    public ServiceModel(Long id, double price, String date, String name) {
+        this.id = id;
         this.price = price;
         this.date = date;
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public double getPrice() {
@@ -39,10 +50,12 @@ public class ServiceModel {
         this.name = name;
     }
 
+
     @Override
     public String toString() {
         return "ServiceModel{" +
-                "price=" + price +
+                "id=" + id +
+                ", price=" + price +
                 ", date='" + date + '\'' +
                 ", name='" + name + '\'' +
                 '}';

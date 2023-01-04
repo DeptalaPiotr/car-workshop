@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.ServiceNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.service.ServiceService;
-import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
 import java.io.IOException;
@@ -17,7 +15,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
-@RequestMapping(value = "/service")
+@RequestMapping(value = "/services")
 public class ServiceController {
     private static final Logger LOGGER = Logger.getLogger(ServiceController.class.getName());
     private ServiceService serviceService;
@@ -37,7 +35,7 @@ public class ServiceController {
         LOGGER.info("create(" + serviceModel + ")");
         ServiceModel createdServiceModel = serviceService.create(serviceModel);
         LOGGER.info("create(...)=" + createdServiceModel);
-        return "service-list";
+        return "redirect:/services";
     }
 
     // R - read
@@ -79,6 +77,7 @@ public class ServiceController {
     }
 
     // L - list
+    @GetMapping
     public String list(ModelMap modelMap) {
         List<ServiceModel> services = serviceService.list();
         modelMap.addAttribute("services", services);
