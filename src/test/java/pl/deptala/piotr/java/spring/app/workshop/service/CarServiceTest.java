@@ -1,13 +1,10 @@
 package pl.deptala.piotr.java.spring.app.workshop.service;
 
-import okhttp3.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
-import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.VinSpecification;
 
@@ -15,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CarServiceTest {
