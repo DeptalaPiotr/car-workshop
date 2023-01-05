@@ -46,7 +46,7 @@ public class ServiceController {
         LOGGER.info("read(" + id + ")");
         ServiceModel serviceModel = serviceService.read(id);
         modelMap.addAttribute("readService", serviceModel);
-        return "";
+        return "read-service";
     }
 
     // U - update
@@ -56,8 +56,8 @@ public class ServiceController {
             throws ServiceNotFoundException {
             LOGGER.info("updateView()" + id + "");
             ServiceModel serviceModel1 = serviceService.read(id);
-            modelMap.addAttribute("car", serviceModel1);
-            return "";
+            modelMap.addAttribute("service", serviceModel1);
+            return "update-service";
     }
 
     @PostMapping(value = "/update")
@@ -65,7 +65,7 @@ public class ServiceController {
         LOGGER.info("update(" + serviceModel + ")");
         ServiceModel updatedServiceModel = serviceService.update(serviceModel);
         LOGGER.info("update(...) = " + updatedServiceModel);
-        return "";
+        return "redirect:/services";
     }
 
     // D - delete
