@@ -10,72 +10,49 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CarWebApplicationTest {
+public class ServiceWebApplicationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void given_when_then() throws Exception {
-        // Given
-        String endPoint = "/cars";
-
-        // When
-        ResultActions resultActions = mockMvc.perform(get(endPoint));
-
-        // Then
-        resultActions
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void createEndPoint() throws Exception {
         // Given
-        String endPoint = "/cars";
+        String endPoint = "/services";
 
-        CarModel carModel = new CarModel();
-        carModel.setBrand("BMW");
-        carModel.setColor("White");
-
-//        Gson gson = new Gson();
-//        String carModelJson = gson.toJson(carModel, CarModel.class);
-//        System.out.println("Car Model Json " + carModelJson);
+        ServiceModel serviceModel = new ServiceModel();
+        serviceModel.setName("brake replacement");
+        serviceModel.setDate("05.01.2023");
+        serviceModel.setPrice(278.11);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("brand", carModel.getBrand());
-        params.add("color", carModel.getColor());
+        params.add("name", serviceModel.getName());
+        params.add("date", serviceModel.getDate());
+//        params.add("price", serviceModel.getPrice());
 
         // When
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .post(endPoint)
                 .params(params)
-//                .contentType(MediaType.APPLICATION_JSON).content(carModelJson)
                 .accept(MediaType.APPLICATION_JSON));
-
-//
-//        this.mockmvc.perform(put("/someUrl/")
-//                        .contentType(MediaType.APPLICATION_JSON).content(json))
-//                .andExpect(status().isOk());
 
         // Then
         resultActions
                 .andExpect(status().is3xxRedirection());
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeId").exists());
     }
 
     @Test
     void readEndPoint() throws Exception {
         // Given
-        String readUrl = "/cars/{id}";
+        String readUrl = "/services/{id}";
 
         // When
         ResultActions resultActions = mockMvc.perform(get(readUrl, 1));
@@ -89,7 +66,7 @@ public class CarWebApplicationTest {
     @Test
     void updateEndPoint() throws Exception {
         // Given
-        String updateUrl = "/cars/update/{id}";
+        String updateUrl = "/services/update/{id}";
 
         // When
         ResultActions resultActions = mockMvc.perform(get(updateUrl, 1));
@@ -103,7 +80,7 @@ public class CarWebApplicationTest {
     @Test
     void deleteEndPoint() throws Exception {
         // Given
-        String deleteUrl = "/cars/delete/{id}";
+        String deleteUrl = "/services/delete/{id}";
 
         // When
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
@@ -115,20 +92,4 @@ public class CarWebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
-    @Test
-    void vinCheckEndPoint() throws Exception {
-        // Given
-        String urlTemplate = "/cars/check/vin/{vin}";
-
-        // When
-        ResultActions resultActions = mockMvc.perform(get(urlTemplate));
-
-        // Then
-        resultActions
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
 }
-
-
