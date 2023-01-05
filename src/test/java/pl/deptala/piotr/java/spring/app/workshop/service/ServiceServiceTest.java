@@ -26,10 +26,11 @@ class ServiceServiceTest {
         // When
         ServiceModel createdServiceModel = serviceService.create(serviceModel);
 
+
         // Then
         Assertions.assertAll(
-                () -> Assertions.assertNotNull(createdServiceModel, "createdCarModel is NULL"));
-//                () -> Assertions.assertNotNull(createdServiceModel.getId(), "createdCarModel ID is NULL"));
+                () -> Assertions.assertNotNull(createdServiceModel, "createdServiceModel is NULL"));
+//                () -> Assertions.assertNotNull(createdServiceModel.getId(), "createdServiceModel ID is NULL"));
     }
 
     @Test

@@ -1,4 +1,4 @@
-package pl.deptala.piotr.java.spring.app.workshop.web;
+package pl.deptala.piotr.java.spring.app.workshop.web.service;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CarHttpRequestTest {
+public class ServiceHttpRequestTest {
 
     @LocalServerPort
     private int port;
@@ -16,25 +16,10 @@ public class CarHttpRequestTest {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    void given_when_then() {
-        // Given
-        String url = "http://localhost:" + port + "/cars";
-        String listCarsHtmlFragment = "List Cars";
-
-        // When
-        String forObject = testRestTemplate.getForObject(url, String.class);
-
-        // Then
-        Assertions
-                .assertThat(forObject)
-                .contains(listCarsHtmlFragment);
-    }
-
-    @Test
     void create_endpoint(){
         // Given
-        String url = "http://localhost:" + port + "/cars/create";
-        String updateCar = "Create Car";
+        String url = "http://localhost:" + port + "/services/create";
+        String updateCar = "Create Service";
 
         // When
         String forObject = testRestTemplate.getForObject(url, String.class);
@@ -43,8 +28,21 @@ public class CarHttpRequestTest {
         Assertions
                 .assertThat(forObject)
                 .contains(updateCar);
+    }
 
+    @Test
+    void delete_endpoint(){
+        // Given
+        String url = "http://localhost:" + port + "/services/delete/1";
+        String updateCar = "Delete Service";
+
+        // When
+        String forObject = testRestTemplate.getForObject(url, String.class);
+
+        // Then
+        Assertions
+                .assertThat(forObject)
+                .contains(updateCar);
     }
 }
-// TODO: 16.12.2022
-// Dopisać analogiczny test dla innego adresu url wyświetającą inna stronę html
+
