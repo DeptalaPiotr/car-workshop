@@ -1,4 +1,4 @@
-package pl.deptala.piotr.java.spring.app.workshop.web;
+package pl.deptala.piotr.java.spring.app.workshop.web.car;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

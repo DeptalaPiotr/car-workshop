@@ -1,4 +1,4 @@
-package pl.deptala.piotr.java.spring.app.workshop.web;
+package pl.deptala.piotr.java.spring.app.workshop.web.car;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,49 +10,72 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import pl.deptala.piotr.java.spring.app.workshop.web.model.ServiceModel;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ServiceWebApplicationTest {
+public class CarWebApplicationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    void given_when_then() throws Exception {
+        // Given
+        String endPoint = "/cars";
+
+        // When
+        ResultActions resultActions = mockMvc.perform(get(endPoint));
+
+        // Then
+        resultActions
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void createEndPoint() throws Exception {
         // Given
-        String endPoint = "/services";
+        String endPoint = "/cars";
 
-        ServiceModel serviceModel = new ServiceModel();
-        serviceModel.setName("brake replacement");
-        serviceModel.setDate("05.01.2023");
-        serviceModel.setPrice(278.11);
+        CarModel carModel = new CarModel();
+        carModel.setBrand("BMW");
+        carModel.setColor("White");
+
+//        Gson gson = new Gson();
+//        String carModelJson = gson.toJson(carModel, CarModel.class);
+//        System.out.println("Car Model Json " + carModelJson);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("name", serviceModel.getName());
-        params.add("date", serviceModel.getDate());
-//        params.add("price", serviceModel.getPrice());
+        params.add("brand", carModel.getBrand());
+        params.add("color", carModel.getColor());
 
         // When
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .post(endPoint)
                 .params(params)
+//                .contentType(MediaType.APPLICATION_JSON).content(carModelJson)
                 .accept(MediaType.APPLICATION_JSON));
+
+//
+//        this.mockmvc.perform(put("/someUrl/")
+//                        .contentType(MediaType.APPLICATION_JSON).content(json))
+//                .andExpect(status().isOk());
 
         // Then
         resultActions
                 .andExpect(status().is3xxRedirection());
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.employeeId").exists());
     }
 
     @Test
     void readEndPoint() throws Exception {
         // Given
-        String readUrl = "/services/{id}";
+        String readUrl = "/cars/{id}";
 
         // When
         ResultActions resultActions = mockMvc.perform(get(readUrl, 1));
@@ -66,7 +89,7 @@ public class ServiceWebApplicationTest {
     @Test
     void updateEndPoint() throws Exception {
         // Given
-        String updateUrl = "/services/update/{id}";
+        String updateUrl = "/cars/update/{id}";
 
         // When
         ResultActions resultActions = mockMvc.perform(get(updateUrl, 1));
@@ -80,7 +103,7 @@ public class ServiceWebApplicationTest {
     @Test
     void deleteEndPoint() throws Exception {
         // Given
-        String deleteUrl = "/services/delete/{id}";
+        String deleteUrl = "/cars/delete/{id}";
 
         // When
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
@@ -92,4 +115,20 @@ public class ServiceWebApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void vinCheckEndPoint() throws Exception {
+        // Given
+        String urlTemplate = "/cars/check/vin/{vin}";
+
+        // When
+        ResultActions resultActions = mockMvc.perform(get(urlTemplate));
+
+        // Then
+        resultActions
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
+
+
