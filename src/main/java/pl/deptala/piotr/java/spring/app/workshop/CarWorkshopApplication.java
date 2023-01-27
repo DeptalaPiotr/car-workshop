@@ -10,3 +10,9 @@ public class CarWorkshopApplication {
         SpringApplication.run(CarWorkshopApplication.class, args);
     }
 }
+
+// TODO: 19.01.2023
+// zadanie z kartki
+// stworzyć nowy controller umożliwaiający zażądzanie CRUD
+// .html create-user
+// stworzyć nowy service, repository, entity & mapper
