@@ -13,6 +13,6 @@ public class CarWorkshopApplication {
 
 // TODO: 19.01.2023
 // zadanie z kartki *
-// stworzyć nowy controller umożliwaiający zażądzanie CRUD
-// .html create-user
-// stworzyć nowy service, repository, entity & mapper
+// stworzyć nowy controller umożliwaiający zażądzanie CRUD*
+// .html create-user*
+// stworzyć nowy service, repository, entity & mapper *
