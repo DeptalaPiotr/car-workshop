@@ -28,7 +28,7 @@ public class CarController {
     @GetMapping(value = "/create")
     public String createView() {
         LOGGER.info("createView()");
-        return "create-car";
+        return "car/create-car";
     }
 
     // C - create
@@ -51,7 +51,7 @@ public class CarController {
         LOGGER.info("read(" + id + ")");
         CarModel carModel = carService.read(id);
         modelMap.addAttribute("readCar", carModel);
-        return "read-car";
+        return "car/read-car";
     }
 
     // U - update
@@ -62,7 +62,7 @@ public class CarController {
         LOGGER.info("updateView()" + id + "");
         CarModel carModel = carService.read(id);
         modelMap.addAttribute("car", carModel);
-        return "update-car";
+        return "car/update-car";
     }
 
 
@@ -88,7 +88,7 @@ public class CarController {
         List<CarModel> cars = carService.list();
         modelMap.addAttribute("cars", cars);
         LOGGER.info("list() = " + cars);
-        return "list-cars";
+        return "car/list-cars";
     }
 
     // Vin Check
