@@ -1,16 +1,18 @@
 package pl.deptala.piotr.java.spring.app.workshop.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.deptala.piotr.java.spring.app.workshop.service.UserService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.UserModel;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
-@RequestMapping(value = "/cars/users")
+@RequestMapping(value = "/users")
 public class UserController {
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
@@ -33,7 +35,7 @@ public class UserController {
         LOGGER.info("create(" + userModel + ")");
         UserModel createdUserModel = userService.create(userModel);
         LOGGER.info("create(...) " + createdUserModel);
-        return "redirect:/cars";
+        return "redirect:/users";
     }
 
     // R - read
@@ -55,8 +57,12 @@ public class UserController {
     }
 
     // L - list
-    public void list() {
+    @GetMapping
+    public String list(ModelMap modelMap) {
         LOGGER.info("list()");
-        LOGGER.info("list(...)");
+        List<UserModel> users = userService.list();
+        modelMap.addAttribute("users", users);
+        LOGGER.info("list(...) " + users);
+        return "user/list-user.html";
     }
 }
