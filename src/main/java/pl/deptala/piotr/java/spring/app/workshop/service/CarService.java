@@ -71,8 +71,7 @@ public class CarService {
         LOGGER.info("delete(" + id + ")");
         Optional<CarEntity> optionalCarEntity = carRepository.findById(id);
         CarEntity carEntity = optionalCarEntity.orElseThrow(
-                () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + id)
-        );
+                () -> new CarNotFoundException("Nie znaleziono samochodu o ID " + id));
         carRepository.delete(carEntity);
         LOGGER.info("delete(...)" + carEntity);
     }
