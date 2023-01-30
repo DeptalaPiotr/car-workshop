@@ -28,7 +28,7 @@ public class ServiceController {
     @GetMapping(value = "/create")
     public String createView() {
         LOGGER.info("createView()");
-        return "create-service";
+        return "service/create-service";
     }
     @PostMapping
     public String create(ServiceModel serviceModel) {
@@ -46,7 +46,7 @@ public class ServiceController {
         LOGGER.info("read(" + id + ")");
         ServiceModel serviceModel = serviceService.read(id);
         modelMap.addAttribute("readService", serviceModel);
-        return "read-service";
+        return "service/read-service";
     }
 
     // U - update
@@ -57,7 +57,7 @@ public class ServiceController {
             LOGGER.info("updateView()" + id + "");
             ServiceModel serviceModel1 = serviceService.read(id);
             modelMap.addAttribute("service", serviceModel1);
-            return "update-service";
+            return "service/update-service";
     }
 
     @PostMapping(value = "/update")
@@ -82,7 +82,7 @@ public class ServiceController {
         List<ServiceModel> services = serviceService.list();
         modelMap.addAttribute("services", services);
         LOGGER.info("list() = " + services);
-        return "service-list";
+        return "service/service-list";
     }
 
 }

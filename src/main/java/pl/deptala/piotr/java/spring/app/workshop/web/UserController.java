@@ -35,7 +35,7 @@ public class UserController {
         LOGGER.info("create(" + userModel + ")");
         UserModel createdUserModel = userService.create(userModel);
         LOGGER.info("create(...) " + createdUserModel);
-        return "redirect:/users";
+        return "user/list-user.html";
     }
 
     // R - read
