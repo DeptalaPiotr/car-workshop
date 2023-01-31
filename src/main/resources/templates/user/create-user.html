@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Create User</title>
@@ -9,12 +9,14 @@
     <h1> Create User </h1>
 </div>
 <div>
-    <form action="/users" method="post">
+<!--    <form action="/users" method="post">-->
+    <form action="#" th:action="@{/users}" method="post">
         <label for="username">User Name:</label><br>
         <input type="text" id="username" name="username" value=""><br>
         <label for="password">Password:</label><br>
-        <input type="text" id="password" name="password" value=""><br><br>
-        <input type="submit" value="Submit">
+        <input type="password" id="password" name="password" value=""><br><br>
+<!--        <input type="submit" value="Submit">-->
+        <button type="submit">Zapisz</button>
     </form>
 </div>
 </body>
