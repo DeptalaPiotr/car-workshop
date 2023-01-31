@@ -45,7 +45,6 @@ public class UserEntity {
         return "UserEntity{" +
                 "id=" + id +
                 ", name='" + username + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }

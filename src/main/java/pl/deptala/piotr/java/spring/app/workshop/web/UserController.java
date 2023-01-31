@@ -1,8 +1,10 @@
 package pl.deptala.piotr.java.spring.app.workshop.web;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.deptala.piotr.java.spring.app.workshop.service.UserService;
@@ -17,10 +19,12 @@ public class UserController {
 
     private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
-    private UserService userService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // C - create
@@ -30,12 +34,14 @@ public class UserController {
         return "user/create-user.html";
     }
 
-    @PostMapping()
-    public String create(UserModel userModel) {
+    @PostMapping
+    public String create(@ModelAttribute UserModel userModel) {
         LOGGER.info("create(" + userModel + ")");
+        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
         UserModel createdUserModel = userService.create(userModel);
         LOGGER.info("create(...) " + createdUserModel);
-        return "user/list-user.html";
+//        return "user/list-user.html";
+        return "redirect:/users";
     }
 
     // R - read
