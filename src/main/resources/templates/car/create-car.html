@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Create Car</title>
@@ -8,6 +8,7 @@
 <div>
   <h1> Create Car </h1>
 </div>
+<div th:replace="fragments/header :: header"></div>
 <div>
     <form action="/cars" method="post">
         <label for="brand">Car brand:</label><br>

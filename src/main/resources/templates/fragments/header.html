@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>Header</h1>
+    <div th:fragment="header">
+        <span>Welcome, </span>
+        <span sec:authentication="name"></span>
+        <span><a href="#" th:href="@{/logout}">Logout</a></span>
+    </div>
+</div>
+</body>
+</html>
