@@ -8,6 +8,7 @@
 <div>
     <h1> Update Car </h1>
 </div>
+<div th:replace="fragments/header :: header"></div>
 <form action="#" th:action="@{/cars/update}" th:object="${car}" method="post">
     <input type="hidden" id="id" name="id" th:value="*{id}"><br>
     <label for="brand">Car brand:</label><br>

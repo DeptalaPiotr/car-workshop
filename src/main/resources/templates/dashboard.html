@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>Dashboard</h1>
+    <div th:replace="fragments/header :: header"></div>
+    <div>
+        <div>
+            <a href="#" th:href="@{/cars/create}">Create a Car</a>
+        </div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <a href="#" th:href="@{/services/create}">Create a Service</a>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
