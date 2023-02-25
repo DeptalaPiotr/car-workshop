@@ -71,9 +71,12 @@ public class UserController {
     }
 
     // D - delete
-    public void delete() {
-        LOGGER.info("delete()");
+    @GetMapping(value = "/delete/{id}")
+    public String delete(@PathVariable(name = "id") Long id) throws UserNotFoundException{
+        LOGGER.info("delete("+id+")");
+        userService.delete(id);
         LOGGER.info("delete(...)");
+        return "redirect:/users";
     }
 
     // L - list

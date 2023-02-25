@@ -31,13 +31,13 @@
                 <td><span th:text="${user.password}"> Password </span></td>
                 <td><a href="#" th:href="@{/users/{id}(id=${user.id})}" >Read </a></td>
                 <td><a href="#" th:href="@{/users/update/{id}(id=${user.id})}">Update </a></td>
-<!--                <td><a href="#" th:href="@{/services/delete/{id}(id=${service.id})}" >Delete </a></td>-->
+                <td><a href="#" th:href="@{/users/delete/{id}(id=${user.id})}" >Delete </a></td>
             </tr>
             </tbody>
         </table>
     </div>
     <div>
-        <a href="#" th:href="@{/users/create}"> Create </a>
+        <a href="#" th:href="@{/users/create}"> Create a User</a>
     </div>
 
 </div>
