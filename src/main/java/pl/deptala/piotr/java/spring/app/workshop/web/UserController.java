@@ -53,9 +53,21 @@ public class UserController {
     }
 
     // U - update
-    public void update() {
-        LOGGER.info("update()");
-        LOGGER.info("update(...)");
+    @GetMapping(value = "/update/{id}")
+    public String updateView(@PathVariable(name = "id") Long id, ModelMap modelMap) throws UserNotFoundException {
+        LOGGER.info("updateView(" + id + ")");
+        UserModel readUserForUpdate = userService.read(id);
+        modelMap.addAttribute("readUserForUpdate", readUserForUpdate);
+        LOGGER.info("updateView(...) " + readUserForUpdate);
+        return "user/update-user.html";
+    }
+
+    @PostMapping(value = "/update")
+    public String update(UserModel userModel) throws UserNotFoundException {
+        LOGGER.info("update(" + userModel + ")");
+        UserModel updateUser = userService.update(userModel);
+        LOGGER.info("update(...) " + updateUser);
+        return "redirect:/users";
     }
 
     // D - delete
