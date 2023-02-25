@@ -7,6 +7,10 @@
 <body>
 <div>
     <h1>Dashboard</h1>
+    <div>
+        <h2 style="color:black; text-align:right">My Account
+        <a href="#"; th:href="@{/cars/create}"><span sec:authentication="name"></span></a></h2>
+    </div>
     <div th:replace="fragments/header :: header"></div>
     <div>
         <div>
@@ -14,6 +18,9 @@
         </div>
         <div sec:authorize="hasRole('ROLE_ADMIN')">
             <a href="#" th:href="@{/services/create}">Create a Service</a>
+        </div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <a href="#" th:href="@{/users/create}"> Create a User </a>
         </div>
     </div>
 </div>

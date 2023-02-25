@@ -1,16 +1,19 @@
 package pl.deptala.piotr.java.spring.app.workshop.repository.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "CARS")
 public class CarEntity {
     @Id
     @GeneratedValue
     private Long id;
+
     private String brand;
     private String color;
+
+    @OneToOne
+    private UserEntity owner;
 
     public CarEntity() {
     }
@@ -39,10 +42,21 @@ public class CarEntity {
         this.color = color;
     }
 
+    public UserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserEntity owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "CarEntity{" +
                 "id=" + id +
+                ", brand='" + brand + '\'' +
+                ", color='" + color + '\'' +
+                ", owner=" + owner +
                 '}';
     }
 }
