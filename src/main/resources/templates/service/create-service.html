@@ -17,6 +17,22 @@
     <input type="text" id="date" name="date" value="05.01.2023"><br><br>
     <label for="price">Price:</label><br>
     <input type="text" id="price" name="price" value="21.37"><br><br>
+    <div>
+      <select >
+        <option value="">Select a Car</option>
+        <option th:each="car : ${cars}"
+                th:value="${car.name}}"
+                th:text="${user.username}"></option>
+      </select>
+    </div>
+    <div>
+      <select >
+        <option value="">Select a User</option>
+        <option th:each="user : ${users}"
+                th:value="${users}"
+                th:text="${user.username}"></option>
+      </select>
+    </div>
     <input type="submit" value="Submit">
   </form>
 </div>

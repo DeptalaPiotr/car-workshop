@@ -6,17 +6,26 @@
 </head>
 <body>
 <div>
-  <h1> Create Car </h1>
+    <h1> Create Car </h1>
 </div>
 <div th:replace="fragments/header :: header"></div>
 <div>
-    <form action="/cars" method="post">
-        <label for="brand">Car brand:</label><br>
-        <input type="text" id="brand" name="brand" value="BMW"><br>
-        <label for="color">Car color:</label><br>
-        <input type="text" id="color" name="color" value="Black"><br><br>
-        <input type="submit" value="Submit">
-    </form>
+<form action="/cars" method="post">
+    <label for="brand">Car brand:</label><br>
+    <input type="text" id="brand" name="brand" value="BMW"><br>
+    <label for="color">Car color:</label><br>
+    <input type="text" id="color" name="color" value="Black"><br><br>
+    <div>
+    <select>
+        <option value="">Select User</option>
+        <option th:each="user : ${users}"
+                th:value="${users}"
+                th:text="${user.username}"></option>
+    </select>
+<!--    <a href="#" th:href="@{/users/create}"> Create a User</a>-->
+</div>
+<input type="submit" value="Submit">
+</form>
 </div>
 </body>
 </html>
