@@ -12,9 +12,7 @@ public class CarEntity {
     private String brand;
     private String color;
 
-//    @OneToOne //(cascade = CascadeType.PERSIST)
-    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "OWNER_ID")
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private UserEntity owner;
 
     public CarEntity() {

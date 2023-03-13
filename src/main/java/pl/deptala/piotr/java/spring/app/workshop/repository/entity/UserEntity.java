@@ -16,10 +16,17 @@ public class UserEntity {
     private String username;
     private String password;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CarEntity> cars;// = new ArrayList<>();
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<CarEntity> cars = new ArrayList<>();
 
     public UserEntity() {
+    }
+
+    public void addCar(CarEntity carEntity) {
+        if (carEntity != null) {
+            carEntity.setOwner(this);
+            this.cars.add(carEntity);
+        }
     }
 
     public Long getId() {

@@ -77,13 +77,20 @@ public class CarService {
     }
 
     // U - update
-    public CarModel update(CarModel car) {
-        LOGGER.info("update(" + car + ")");
-        CarEntity updateCar = carMapper.from(car);
-        CarEntity saveCarEntity = carRepository.save(updateCar);
-        CarModel carModel = carMapper.from(saveCarEntity);
-        LOGGER.info("update(...)" + carModel);
-        return carModel;
+    public CarModel update(CarModel carModel) {
+        LOGGER.info("update(" + carModel + ")");
+        CarEntity carEntity = carMapper.from(carModel);
+
+        UserModel owner = carModel.getOwner();
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(owner.getId());
+        UserEntity userEntity = optionalUserEntity.orElse(new UserEntity());
+        carEntity.setOwner(userEntity);
+
+        CarEntity saveCarEntity = carRepository.save(carEntity);
+        CarModel mappedCarModel = carMapper.from(saveCarEntity);
+
+        LOGGER.info("update(...)" + mappedCarModel);
+        return mappedCarModel;
     }
 
     // D - delete

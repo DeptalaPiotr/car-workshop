@@ -65,7 +65,9 @@ public class CarController {
     public String updateView(
             @PathVariable(name = "id") Long id, ModelMap modelMap)
             throws CarNotFoundException {
-        LOGGER.info("updateView()" + id + "");
+        LOGGER.info("updateView(" + id + ")");
+        List<UserEntity> users = userRepository.findAll();
+        modelMap.addAttribute("users", users);
         CarModel carModel = carService.read(id);
         modelMap.addAttribute("car", carModel);
         return "car/update-car";
@@ -82,7 +84,7 @@ public class CarController {
 
     // D - delete
     @GetMapping(value = "/delete/{id}")
-    public String delete(@PathVariable(name = "id") Long id) throws CarNotFoundException{
+    public String delete(@PathVariable(name = "id") Long id) throws CarNotFoundException {
         LOGGER.info("delete(" + id + ")");
         carService.delete(id);
         return "redirect:/cars";
@@ -99,7 +101,7 @@ public class CarController {
 
     // Vin Check
     @GetMapping(value = "/check/vin/{vin}")
-    public VinSpecification vinCheck (String vin) throws IOException {
+    public VinSpecification vinCheck(String vin) throws IOException {
         LOGGER.info("vinCheck()");
         VinSpecification vinSpecification = carService.vinCheck(vin);
         LOGGER.info("vinCheck(...)");
