@@ -3,10 +3,8 @@ package pl.deptala.piotr.java.spring.app.workshop.web;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.UserNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.service.UserService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.UserModel;
 
@@ -45,21 +43,40 @@ public class UserController {
     }
 
     // R - read
-    public void read() {
-        LOGGER.info("read()");
-        LOGGER.info("read(...)");
+    @GetMapping(value = "/{id}")
+    public String read(@PathVariable(name = "id") Long id, ModelMap modelMap) throws UserNotFoundException {
+        LOGGER.info("read(" + id + ")");
+        UserModel readUser = userService.read(id);
+        modelMap.addAttribute("readUser", readUser);
+        LOGGER.info("read(...) " + readUser);
+        return "user/read-user.html";
     }
 
     // U - update
-    public void update() {
-        LOGGER.info("update()");
-        LOGGER.info("update(...)");
+    @GetMapping(value = "/update/{id}")
+    public String updateView(@PathVariable(name = "id") Long id, ModelMap modelMap) throws UserNotFoundException {
+        LOGGER.info("updateView(" + id + ")");
+        UserModel readUserForUpdate = userService.read(id);
+        modelMap.addAttribute("readUserForUpdate", readUserForUpdate);
+        LOGGER.info("updateView(...) " + readUserForUpdate);
+        return "user/update-user.html";
+    }
+
+    @PostMapping(value = "/update")
+    public String update(UserModel userModel) throws UserNotFoundException {
+        LOGGER.info("update(" + userModel + ")");
+        UserModel updateUser = userService.update(userModel);
+        LOGGER.info("update(...) " + updateUser);
+        return "redirect:/users";
     }
 
     // D - delete
-    public void delete() {
-        LOGGER.info("delete()");
+    @GetMapping(value = "/delete/{id}")
+    public String delete(@PathVariable(name = "id") Long id) throws UserNotFoundException{
+        LOGGER.info("delete("+id+")");
+        userService.delete(id);
         LOGGER.info("delete(...)");
+        return "redirect:/users";
     }
 
     // L - list

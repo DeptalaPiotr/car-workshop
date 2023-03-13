@@ -1,10 +1,12 @@
 package pl.deptala.piotr.java.spring.app.workshop.web;
 
-import okhttp3.Response;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.UserNotFoundException;
+import pl.deptala.piotr.java.spring.app.workshop.repository.UserRepository;
+import pl.deptala.piotr.java.spring.app.workshop.repository.entity.UserEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.VinSpecification;
@@ -19,15 +21,19 @@ public class CarController {
 
     private static final Logger LOGGER = Logger.getLogger(CarController.class.getName());
 
-    private CarService carService; // zależność
+    private final CarService carService; // zależność
+    private final UserRepository userRepository;
 
-    public CarController(CarService carService) { // wtrzyknięcie zależnosci
+    public CarController(CarService carService, UserRepository userRepository) { // wtrzyknięcie zależnosci
         this.carService = carService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping(value = "/create")
-    public String createView() {
+    public String createView(ModelMap modelMap) {
         LOGGER.info("createView()");
+        List<UserEntity> users = userRepository.findAll();
+        modelMap.addAttribute("users", users);
         return "car/create-car";
     }
 
@@ -36,7 +42,7 @@ public class CarController {
     // metody w kontrolerze służą do weryfikacji/walidacji danych wprowadzonych przez użytkownika
     // Metody nie powinny zawierać logiki biznesowej
     @PostMapping
-    public String create(CarModel carModel) {
+    public String create(CarModel carModel) throws UserNotFoundException {
         LOGGER.info("create(" + carModel + ")");
         CarModel createdCarModel = carService.create(carModel); // delegacja wywołania metody
         LOGGER.info("create(...)=" + createdCarModel);
@@ -59,7 +65,9 @@ public class CarController {
     public String updateView(
             @PathVariable(name = "id") Long id, ModelMap modelMap)
             throws CarNotFoundException {
-        LOGGER.info("updateView()" + id + "");
+        LOGGER.info("updateView(" + id + ")");
+        List<UserEntity> users = userRepository.findAll();
+        modelMap.addAttribute("users", users);
         CarModel carModel = carService.read(id);
         modelMap.addAttribute("car", carModel);
         return "car/update-car";
@@ -76,7 +84,7 @@ public class CarController {
 
     // D - delete
     @GetMapping(value = "/delete/{id}")
-    public String delete(@PathVariable(name = "id") Long id) throws CarNotFoundException{
+    public String delete(@PathVariable(name = "id") Long id) throws CarNotFoundException {
         LOGGER.info("delete(" + id + ")");
         carService.delete(id);
         return "redirect:/cars";
@@ -93,7 +101,7 @@ public class CarController {
 
     // Vin Check
     @GetMapping(value = "/check/vin/{vin}")
-    public VinSpecification vinCheck (String vin) throws IOException {
+    public VinSpecification vinCheck(String vin) throws IOException {
         LOGGER.info("vinCheck()");
         VinSpecification vinSpecification = carService.vinCheck(vin);
         LOGGER.info("vinCheck(...)");

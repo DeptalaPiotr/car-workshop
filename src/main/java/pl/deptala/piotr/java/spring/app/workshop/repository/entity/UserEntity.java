@@ -1,6 +1,8 @@
 package pl.deptala.piotr.java.spring.app.workshop.repository.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "USERS")
@@ -9,11 +11,22 @@ public class UserEntity {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(unique = true)
+
+    //    @Column(unique = true)
     private String username;
     private String password;
 
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<CarEntity> cars = new ArrayList<>();
+
     public UserEntity() {
+    }
+
+    public void addCar(CarEntity carEntity) {
+        if (carEntity != null) {
+            carEntity.setOwner(this);
+            this.cars.add(carEntity);
+        }
     }
 
     public Long getId() {
@@ -40,11 +53,20 @@ public class UserEntity {
         this.password = password;
     }
 
+    public List<CarEntity> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<CarEntity> cars) {
+        this.cars = cars;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
                 "id=" + id +
-                ", name='" + username + '\'' +
+                ", username='" + username + '\'' +
+                ", cars=" + cars +
                 '}';
     }
 }

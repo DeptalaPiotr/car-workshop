@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.UserNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.VinSpecification;
 
@@ -19,7 +20,7 @@ class CarServiceTest {
     private CarService carService;
 
     @Test
-    void create() {
+    void create() throws UserNotFoundException {
         // Given
         CarModel carModel = new CarModel();
 
@@ -33,7 +34,7 @@ class CarServiceTest {
     }
 
     @Test
-    void read() throws CarNotFoundException {
+    void read() throws CarNotFoundException, UserNotFoundException {
         // Given
         CarModel carModel = new CarModel();
         long carId = 888;
@@ -78,7 +79,7 @@ class CarServiceTest {
     }
 
     @Test
-    void delete() throws CarNotFoundException {
+    void delete() throws CarNotFoundException, UserNotFoundException {
         // Given
         CarModel carModel = new CarModel();
         long id = 4588;
@@ -96,7 +97,7 @@ class CarServiceTest {
     }
 
     @Test
-    void list() {
+    void list() throws UserNotFoundException {
         // Given
         CarModel bmw = new CarModel();
         CarModel fiat = new CarModel();

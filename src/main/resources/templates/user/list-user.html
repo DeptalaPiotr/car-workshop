@@ -8,6 +8,7 @@
 <body>
 <div>
     <h1> Users List </h1>
+    <div th:replace="fragments/header :: header"></div>
     <div>
         <table>
             <thead>
@@ -26,17 +27,17 @@
             </tr>
             <tr th:each="user : ${users}">
                 <td><span th:text="${user.id}"> Id </span></td>
-                <td><span th:text="${user.username}"> Service Type </span></td>
-                <td><span th:password="${user.password}"> Date </span></td>
-<!--                <td><a href="#" th:href="@{/services/{id}(id=${service.id})}" >Read </a></td>-->
-<!--                <td><a href="#" th:href="@{/services/update/{id}(id=${service.id})}">Update </a></td>-->
-<!--                <td><a href="#" th:href="@{/services/delete/{id}(id=${service.id})}" >Delete </a></td>-->
+                <td><span th:text="${user.username}"> User Name </span></td>
+                <td><span th:text="${user.password}"> Password </span></td>
+                <td><a href="#" th:href="@{/users/{id}(id=${user.id})}" >Read </a></td>
+                <td><a href="#" th:href="@{/users/update/{id}(id=${user.id})}">Update </a></td>
+                <td><a href="#" th:href="@{/users/delete/{id}(id=${user.id})}" >Delete </a></td>
             </tr>
             </tbody>
         </table>
     </div>
     <div>
-        <a href="#" th:href="@{/users/create}"> Create </a>
+        <a href="#" th:href="@{/users/create}"> Create a User</a>
     </div>
 
 </div>

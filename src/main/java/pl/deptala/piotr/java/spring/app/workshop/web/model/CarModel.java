@@ -6,6 +6,8 @@ public class CarModel {
     private String brand;
     private String color;
 
+    private UserModel owner;
+
     public CarModel() {
     }
 
@@ -33,12 +35,21 @@ public class CarModel {
         this.color = color;
     }
 
+    public UserModel getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserModel owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "CarModel{" +
                 "id=" + id +
                 ", brand='" + brand + '\'' +
                 ", color='" + color + '\'' +
+                ", owner=" + owner +
                 '}';
     }
 }

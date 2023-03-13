@@ -16,6 +16,13 @@
     <input type="text" id="brand" th:field="${car.brand}"><br>
     <label for="color">Car color:</label><br>
     <input type="text" id="color" name="color" th:value="${car.color}"><br>
+    <select name="owner.id">
+        <option value="">Select User</option>
+        <option th:each="user : ${users}"
+                th:value="${user.id}"
+                th:text="${user.username}"
+                th:selected="${user.id == car.owner.id}"></option>
+    </select>
     <input type="submit" value="Submit">
 </form>
 </div>

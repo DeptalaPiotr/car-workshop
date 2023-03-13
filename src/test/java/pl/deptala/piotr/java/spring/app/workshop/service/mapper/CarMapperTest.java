@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,23 @@ class CarMapperTest {
         CarModel carModel = new CarModel();
         carModel.setColor("Black");
         carModel.setBrand("BMW");
+
+        UserModel userModel = new UserModel();
+        userModel.setId(1L);
+        userModel.setUsername("Marta");
+        userModel.setPassword("1234");
+
+        carModel.setOwner(userModel);
+
         // When
         CarEntity mappedEntity = carMapper.from(carModel);
+
         // Then
-        Assertions.assertNotNull(mappedEntity, "mappedEntity is NULL");
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(mappedEntity, "mappedEntity is NULL"),
+                () -> Assertions.assertNotNull(mappedEntity.getOwner(), "mappedEntity OWNER is NULL")
+        );
+
     }
 
     @Test

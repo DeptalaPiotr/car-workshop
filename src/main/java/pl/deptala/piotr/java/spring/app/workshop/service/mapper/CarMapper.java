@@ -14,10 +14,10 @@ public class CarMapper {
     private static final Logger LOGGER = Logger.getLogger(CarMapper.class.getName());
 
     public CarEntity from(CarModel carModel) {
-        LOGGER.info("from()");
+        LOGGER.info("from(" + carModel + ")");
         ModelMapper modelMapper = new ModelMapper();
         CarEntity carEntity = modelMapper.map(carModel, CarEntity.class);
-        LOGGER.info("from(...)" + carEntity);
+        LOGGER.info("from(...) = " + carEntity);
         return carEntity;
     }
 
