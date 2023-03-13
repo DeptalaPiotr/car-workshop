@@ -22,7 +22,7 @@ class CarRepositoryIntegrationTest {
 
         // Given
         UserEntity owner = new UserEntity();
-        owner.setUsername("Tom");
+        owner.setUsername("Grzegorz");
         UserEntity saveOwner = userRepository.save(owner);
 
         CarEntity carWhitOwner = new CarEntity();
@@ -36,3 +36,8 @@ class CarRepositoryIntegrationTest {
         // Then
     }
 }
+/*
+SELECT * FROM USERS AS U
+JOIN CARS AS C
+ON U.ID=C.OWNER_ID;
+ */

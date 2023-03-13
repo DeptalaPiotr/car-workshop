@@ -6,12 +6,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.stereotype.Service;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
+import pl.deptala.piotr.java.spring.app.workshop.api.exception.UserNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.repository.CarRepository;
+import pl.deptala.piotr.java.spring.app.workshop.repository.UserRepository;
 import pl.deptala.piotr.java.spring.app.workshop.repository.entity.CarEntity;
+import pl.deptala.piotr.java.spring.app.workshop.repository.entity.UserEntity;
 import pl.deptala.piotr.java.spring.app.workshop.service.mapper.CarMapper;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
+import pl.deptala.piotr.java.spring.app.workshop.web.model.UserModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.VinSpecification;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +24,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 @Service
+@Transactional
 public class CarService {
     private static final Logger LOGGER = Logger.getLogger(CarService.class.getName());
     private final ResourceBundle readCredentials = ResourceBundle.getBundle("application");
@@ -26,18 +32,33 @@ public class CarService {
 
     private CarRepository carRepository;
     private CarMapper carMapper;
+    private UserService userService;
+    private UserRepository userRepository;
 
-    public CarService(CarRepository carRepository, CarMapper carMapper) {
+    public CarService(CarRepository carRepository, CarMapper carMapper, UserService userService, UserRepository userRepository) {
         this.carRepository = carRepository;
         this.carMapper = carMapper;
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     // C - create
     // Serwis zawiera logikę biznesową
     // Operując na instnejecych danych w systemie i danych danych wprowadzonych przez użytkownika
-    public CarModel create(CarModel carModel) {
+    @Transactional
+    public CarModel create(CarModel carModel) throws UserNotFoundException {
         LOGGER.info("create(" + carModel + ")");
+        UserModel owner = carModel.getOwner();
+        if (owner != null) {
+            UserModel userModel = userService.read(owner.getId());
+//            carModel.setOwner(userModel);
+        }
+
         CarEntity carEntity = carMapper.from(carModel);
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(owner.getId());
+        UserEntity userEntity = optionalUserEntity.orElse(new UserEntity());
+        carEntity.setOwner(userEntity);
+
         CarEntity savedCarEntity = carRepository.save(carEntity);
         CarModel mappedCarModel = carMapper.from(savedCarEntity);
         LOGGER.info("create(...) = " + mappedCarModel);

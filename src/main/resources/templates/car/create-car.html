@@ -10,16 +10,16 @@
 </div>
 <div th:replace="fragments/header :: header"></div>
 <div>
-<form action="/cars" method="post">
+<form action="/cars" method="post" th:object="${carModel}">
     <label for="brand">Car brand:</label><br>
     <input type="text" id="brand" name="brand" value="BMW"><br>
     <label for="color">Car color:</label><br>
     <input type="text" id="color" name="color" value="Black"><br><br>
     <div>
-    <select>
+    <select name="owner.id">
         <option value="">Select User</option>
         <option th:each="user : ${users}"
-                th:value="${users}"
+                th:value="${user.id}"
                 th:text="${user.username}"></option>
     </select>
 <!--    <a href="#" th:href="@{/users/create}"> Create a User</a>-->
