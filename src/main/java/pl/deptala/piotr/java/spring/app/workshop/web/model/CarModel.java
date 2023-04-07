@@ -1,5 +1,6 @@
 package pl.deptala.piotr.java.spring.app.workshop.web.model;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 public class CarModel {
@@ -10,6 +11,7 @@ public class CarModel {
     @NotEmpty(message = "Wprowadź kolor samochodu")
     private String color;
 
+    @Valid
     private UserModel owner;
 
     public CarModel() {
