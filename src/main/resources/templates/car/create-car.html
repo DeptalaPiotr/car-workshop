@@ -10,22 +10,32 @@
 </div>
 <div th:replace="fragments/header :: header"></div>
 <div>
-<form action="/cars" method="post" th:object="${carModel}">
-    <label for="brand">Car brand:</label><br>
-    <input type="text" id="brand" name="brand" value="BMW"><br>
-    <label for="color">Car color:</label><br>
-    <input type="text" id="color" name="color" value="Black"><br><br>
-    <div>
-    <select name="owner.id">
-        <option value="">Select User</option>
-        <option th:each="user : ${users}"
-                th:value="${user.id}"
-                th:text="${user.username}"></option>
-    </select>
-<!--    <a href="#" th:href="@{/users/create}"> Create a User</a>-->
-</div>
-<input type="submit" value="Submit">
-</form>
+    <form action="/cars" method="post" th:object="${carModel}">
+        <div>
+            <label for="brand">Car brand:</label>
+<!--            <input type="text" id="brand" name="brand">-->
+            <input type="text" th:field="*{brand}">
+        </div>
+        <div>
+            <label for="color">Car color:</label>
+<!--            <input type="text" id="color" name="color">-->
+            <input type="text" th:field="${carModel.color}">
+        </div>
+<!--        <div>-->
+<!--            <input type="text" th:field="*{datePlanted}"/>-->
+<!--            <p th:if="${#fields.hasErrors('datePlanted')}" th:errors="*{datePlanted}">Incorrect date</p>-->
+<!--        </div>-->
+        <div>
+            <select name="owner.id">
+                <option value="">Select User</option>
+                <option th:each="user : ${users}"
+                        th:value="${user.id}"
+                        th:text="${user.username}"></option>
+            </select>
+            <!--    <a href="#" th:href="@{/users/create}"> Create a User</a>-->
+        </div>
+        <input type="submit" value="Submit">
+    </form>
 </div>
 </body>
 </html>

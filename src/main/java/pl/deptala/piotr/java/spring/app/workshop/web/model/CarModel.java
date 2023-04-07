@@ -1,9 +1,13 @@
 package pl.deptala.piotr.java.spring.app.workshop.web.model;
 
+import javax.validation.constraints.NotEmpty;
+
 public class CarModel {
 
     private Long id;
+    @NotEmpty(message = "Wprowadź markę samochodu")
     private String brand;
+    @NotEmpty(message = "Wprowadź kolor samochodu")
     private String color;
 
     private UserModel owner;

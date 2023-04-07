@@ -2,6 +2,7 @@ package pl.deptala.piotr.java.spring.app.workshop.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.CarNotFoundException;
 import pl.deptala.piotr.java.spring.app.workshop.api.exception.UserNotFoundException;
@@ -11,6 +12,7 @@ import pl.deptala.piotr.java.spring.app.workshop.service.CarService;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.CarModel;
 import pl.deptala.piotr.java.spring.app.workshop.web.model.VinSpecification;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -34,6 +36,7 @@ public class CarController {
         LOGGER.info("createView()");
         List<UserEntity> users = userRepository.findAll();
         modelMap.addAttribute("users", users);
+        modelMap.addAttribute("carModel", new CarModel());
         return "car/create-car";
     }
 
@@ -42,8 +45,14 @@ public class CarController {
     // metody w kontrolerze służą do weryfikacji/walidacji danych wprowadzonych przez użytkownika
     // Metody nie powinny zawierać logiki biznesowej
     @PostMapping
-    public String create(CarModel carModel) throws UserNotFoundException {
+    public String create(
+            @Valid @ModelAttribute(name = "carModel") CarModel carModel,
+            BindingResult bindingResult) throws UserNotFoundException {
         LOGGER.info("create(" + carModel + ")");
+        if (bindingResult.hasErrors()) {
+            LOGGER.info("Formularz zawiera błędy");
+            return "car/create-car";
+        }
         CarModel createdCarModel = carService.create(carModel); // delegacja wywołania metody
         LOGGER.info("create(...)=" + createdCarModel);
         return "redirect:/cars";
