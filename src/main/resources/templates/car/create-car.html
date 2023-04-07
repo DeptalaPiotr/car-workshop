@@ -13,13 +13,15 @@
     <form action="/cars" method="post" th:object="${carModel}">
         <div>
             <label for="brand">Car brand:</label>
+            <p th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Incorrect color</p>
 <!--            <input type="text" id="brand" name="brand">-->
-            <input type="text" th:field="*{brand}">
+            <input type="text" id="brand" th:field="*{brand}">
         </div>
         <div>
             <label for="color">Car color:</label>
 <!--            <input type="text" id="color" name="color">-->
-            <input type="text" th:field="${carModel.color}">
+            <p th:if="${#fields.hasErrors('color')}" th:errors="*{color}">Incorrect color</p>
+            <input type="text" id="color" th:field="${carModel.color}">
         </div>
 <!--        <div>-->
 <!--            <input type="text" th:field="*{datePlanted}"/>-->
