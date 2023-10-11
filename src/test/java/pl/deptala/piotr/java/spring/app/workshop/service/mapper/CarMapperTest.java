@@ -36,8 +36,8 @@ class CarMapperTest {
 
         // Then
         Assertions.assertAll(
-                () -> Assertions.assertNotNull(mappedEntity, "mappedEntity is NULL"),
-                () -> Assertions.assertNotNull(mappedEntity.getOwner(), "mappedEntity OWNER is NULL")
+                () -> Assertions.assertNotNull(mappedEntity, "mapped User Entity is NULL"),
+                () -> Assertions.assertNotNull(mappedEntity, "mappedUEntity OWNER is NULL")
         );
 
     }
